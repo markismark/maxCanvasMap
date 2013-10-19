@@ -1,3 +1,14 @@
+window.requestAnimFrame = (function(){
+    return  window.requestAnimationFrame       ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        window.oRequestAnimationFrame      ||
+        window.msRequestAnimationFrame     ||
+        function( callback ){
+            window.setTimeout(callback, 1000/60);
+        };
+})();
+
 var max = {};
 max.Map = function (id, extent) {
     this._canvas = document.getElementById(id);
@@ -9,6 +20,8 @@ max.Map = function (id, extent) {
     this.resolutions = [156543.0339280406, 78271.51696402031, 39135.75848201016, 19567.87924100508, 9783.939620502539, 4891.96981025127, 2445.984905125635, 1222.992452562817, 611.4962262814087, 305.7481131407043, 152.8740565703522, 76.43702828517608, 38.21851414258804, 19.10925707129402, 9.554628535647009];
     this.init();
     this.wkid = 102100;
+    this._pub=new max.event.Publisher();
+    this._sub=new max.event.Subscriber();
 }
 
 max.Map.prototype = {
@@ -23,9 +36,10 @@ max.Map.prototype = {
         var that = this;
         this.dragMap();
         this.scrollMap();
+        this._addAllEvent();
         var x = function () {
             that.draw.call(that);
-            requestAnimationFrame(x)
+            requestAnimFrame(x)
         }
         x();
     },
@@ -68,10 +82,10 @@ max.Map.prototype = {
         var pos = null;
         var that = this;
         var draging = false;
-        this._canvas.onmousedown = function (event) {
+        var onmousedown=function(event){
             pos = max.util.windowToMapClient(that._canvas, event.clientX, event.clientY);
             draging = true;
-            that._canvas.onmousemove = function (event) {
+            var onmousemove = function (event) {
                 if (draging) {
                     var pos1 = max.util.windowToMapClient(that._canvas, event.clientX, event.clientY);
                     var x = pos1.x - pos.x;
@@ -91,17 +105,21 @@ max.Map.prototype = {
                     }
                 }
             }
-            document.onmouseup = function (event) {
+            var onmouseup = function (event) {
                 pos = null;
                 draging = false;
-                document.onmouseup = null;
-                that._canvas.onmousemove = null;
+                max.event.removeHandler(that._canvas,"mousemove",onmousemove);
+                max.event.removeHandler(document,"mouseup",onmouseup);
             }
+            max.event.addHandler(that._canvas,"mousemove",onmousemove);
+            max.event.addHandler(document,"mouseup",onmouseup);
         }
+        max.event.addHandler(this._canvas,"mousedown",onmousedown);
+
     },
     scrollMap:function () {
         var that = this;
-        this._canvas.onmousewheel = function (event) {
+        var onmousewheel = function (event) {
             var pos = max.util.windowToMapClient(that._canvas, event.clientX, event.clientY);
             var point = that.mapClientToMap(pos);
             if (event.wheelDelta > 0) {
@@ -154,7 +172,37 @@ max.Map.prototype = {
 
             //that.draw();
         }
-
+        if(typeof this._canvas.onmousewheel !=="undefined"){
+            max.event.addHandler(this._canvas,"mousewheel",onmousewheel);
+        }else{
+            max.event.addHandler(this._canvas,"wheel",onmousewheel);
+        }
+    },
+    addEventListener:function(type,handler){
+        this._sub.bind(this._pub,type,handler);
+    },
+    removeEventListener:function(type,handler){
+        this._sub.unbind(this._pub,type,handler);
+    },
+    _addAllEvent:function(){
+        var that=this;
+        //给事件添加map空间信息
+        var addEventAttribute=function(event){
+            var pos=max.util.windowToMapClient(that._canvas,event.clientX,event.clientY);
+            event.clientPosition=pos;
+            event.mapPosition={
+                x:that.originPoint.x+that.resolution*pos.x,
+                y:that.originPoint.y+that.resolution*pos.y
+            }
+            return event;
+        }
+        var addEvent=function(type){
+            max.event.addHandler(that._canvas,type,function(event){
+                event=addEventAttribute(event);
+                that._pub.trigger("on"+type,event);
+            });
+        }
+        addEvent("click");
     }
 }
 

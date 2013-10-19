@@ -26,5 +26,8 @@ map.addLayer(grapherLayer);
 //    console.log(newtime.getTime()-oldtime.getTime());
 //},10*1000);
 
+map.addEventListener("onclick",function(event){
+    console.log(event);
+})
 
 

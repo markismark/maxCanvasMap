@@ -7,5 +7,11 @@ max.Layer.prototype={
     },
     load:function(){
 
+    },
+    addEventListener:function(){
+
+    },
+    removeEventListner:function(){
+
     }
 }
