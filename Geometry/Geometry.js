@@ -1,6 +1,3 @@
-if(typeof max.Geometry!==undefined){
-    max.Geometry={};
-}
 
 max.Geometry.Geometry=function(){
 

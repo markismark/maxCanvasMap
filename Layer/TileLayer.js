@@ -1,3 +1,6 @@
+/**
+ * 切片服务基类
+ */
 max.Layer.TileLayer = function (serviceUrl) {
     this.serviceUrl = serviceUrl;
     this.parentMap = null;
@@ -63,7 +66,6 @@ max.Layer.TileLayer.prototype = {
     updateImage:function (image) {
 
     },
-
     draw:function () {
         for (var i in this._imageList) {
             var _image = this._imageList[i];

@@ -15,8 +15,8 @@ max.Map.prototype = {
     init:function () {
         this.resolution = (this.extent.xmax - this.extent.xmin) / (this._canvas.width);
         this.originPoint = {
-            x:-20037508.3427892,
-            y:-20037508.3427892
+            x:this.extent.xmin,
+            y:this.extent.ymin
         }
         this.extent.xmax = this.extent.xmin + this.resolution * this._canvas.width;
         this.extent.ymax = this.extent.ymin + this.resolution * this._canvas.height;
@@ -164,3 +164,5 @@ max.Extent = function (extent) {
     this.ymin = extent.ymin;
     this.ymax = extent.ymax;
 }
+
+max.Geometry={};

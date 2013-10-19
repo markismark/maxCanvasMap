@@ -1,9 +1,3 @@
-/**
- *
- */
-if(typeof max.Geometry!==undefined){
-    max.Geometry={};
-}
 
 max.Geometry.Grapher=function(geometry,attribute,symbol){
     this.geometry=geometry;
