@@ -2,8 +2,8 @@ max.util = {
     windowToMapClient:function (canvas, x, y) {
         var bbox = canvas.getBoundingClientRect();
         return {
-            x:x + document.body.scrollLeft - bbox.left - (bbox.width - canvas.width) / 2,
-            y:y + document.body.scrollTop - bbox.top - (bbox.height - canvas.height) / 2
+            x:x - bbox.left - (bbox.width - canvas.width) / 2,
+            y:y - bbox.top - (bbox.height - canvas.height) / 2
         };
     },
     lonLat2WebMercator:function (lonLat) {

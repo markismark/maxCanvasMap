@@ -203,6 +203,16 @@ max.Map.prototype = {
             });
         }
         addEvent("click");
+        addEvent("mouseover");
+        addEvent("mouseon");
+        addEvent("mouseup");
+        addEvent("mousedown");
+        addEvent("mousemove");
+        addEvent("mouseout");
+        addEvent("dbclick");
+        addEvent("keydown");
+        addEvent("keypress");
+        addEvent("keyup");
     }
 }
 

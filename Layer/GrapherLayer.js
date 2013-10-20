@@ -1,4 +1,5 @@
 max.Layer.GrapherLayer=function(){
+    max.Layer.call(this);
     this.graphers=[];
 
 }
@@ -9,10 +10,16 @@ max.Layer.GrapherLayer.prototype.addGraphic=function(grapher){
             return false;
         }
     }
+    grapher.parentLayer=this;
     this.graphers.push(grapher);
 };
+max.Layer.GrapherLayer.prototype.removeGraphic=function(grapher){
+   //todo
+};
 max.Layer.GrapherLayer.prototype.draw=function(){
-    for(var i in this.graphers){
+    var l=this.graphers.length;
+    for(var i=l-1;i>-1;--i){
         this.graphers[i].draw(this.parentMap);
     }
+    this._eventList=[];
 }

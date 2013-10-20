@@ -6,10 +6,19 @@ var extent=new max.Extent({xmin:8338988.713709,
 var layer=new max.Layer.GoogleLayer("http://mt2.google.cn/vt/");
 map.addLayer(layer);
 map._context.fillStyle='rgba(30,113,240,0.8)';
-var point=new max.Geometry.Point(-20037508/2,-20037508/2,{wkid:102100});
+
+
+var point=new max.Geometry.Point(10338988,-3557548,{wkid:102100});
 var grapher=new max.Geometry.Grapher(point);
+grapher.attribute.name="first point";
+
+var point2=new max.Geometry.Point(10438988,-4557548,{wkid:102100});
+var grapher2=new max.Geometry.Grapher(point2);
+grapher2.attribute.name="second point";
+
 var grapherLayer=new max.Layer.GrapherLayer();
 grapherLayer.addGraphic(grapher);
+grapherLayer.addGraphic(grapher2);
 map.addLayer(grapherLayer);
 
 
@@ -26,8 +35,9 @@ map.addLayer(grapherLayer);
 //    console.log(newtime.getTime()-oldtime.getTime());
 //},10*1000);
 
-map.addEventListener("onclick",function(event){
-    console.log(event);
+grapherLayer.addEventListener("onclick",function(event){
+    console.log(event.grapher.attribute.name);
 })
+
 
 
