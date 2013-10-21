@@ -189,7 +189,6 @@ max.Map.prototype = {
         var that=this;
         var targetGrapher=null;
         var targetLayer=null;
-
         //给事件添加map空间信息
         var addEventAttribute=function(event){
             var pos=max.util.windowToMapClient(that._canvas,event.clientX,event.clientY);
@@ -211,11 +210,8 @@ max.Map.prototype = {
             });
         }
         addEvent("click");
-        //addEvent("mouseover");
         addEvent("mouseup");
         addEvent("mousedown");
-        //addEvent("mousemove");
-        //addEvent("mouseout");
         addEvent("dbclick");
         addEvent("keydown");
         addEvent("keypress");
@@ -267,24 +263,15 @@ max.Map.prototype = {
             }
 
         })
-    },
-    _mousechange:function(){
-        //这里计算鼠标改变时，记录在哪一个grpher上面，作为事件mouseout mouseover前提
-        var that=this;
-        var newGrapher=null;
-        var newLayer=null;
-        max.event.addHandler(this._canvas,"mousemove",function(event){
-            var pos=max.util.windowToMapClient(that._canvas,event.clientX,event.clientY);
-            var l=that._layers.length;
-            for(var i=l-1;i!=-1;--i){
-                var layer=that._layers[i];
-                var g=layer._mousePointInLayer(pos.x,pos.y);
-                if(g!==null){
-                    newGrapher=g;
-                    newLayer= g.parentLayer;
-                    break;
-                }
+        max.event.addHandler(this._canvas,"mouseout",function(evebt){
+            if(targetGrapher!==null){
+                event=addEventAttribute(event);
+                event.grapher=targetGrapher;
+                that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
+                targetGrapher=null;
+                targetLayer=null;
             }
+
         })
     }
 }

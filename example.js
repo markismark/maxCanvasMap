@@ -26,7 +26,7 @@ map.addLayer(grapherLayer2);
 
 setTimeout(function(){
     var oldtime=new Date();
-    for(var i=0;i!=100;++i){
+    for(var i=0;i!=10000;++i){
         var x=Math.random()*20037508*2-20037508;
         var y=Math.random()*20037508*2-20037508;
         var p=new max.Geometry.Point(x,y,{wkid:102100});
