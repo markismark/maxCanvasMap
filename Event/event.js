@@ -161,6 +161,22 @@ max.event.Publisher.prototype = {
                 }
             }
         }
+    },
+    triggerDirectToSub:function(sub,type,event){
+        for(var i in this.items) {
+            var _item = this.items[i];
+            if(_item.type == type) {
+                for(var j in _item.list) {
+                    var _sitem = _item.list[j];
+                    if(_sitem.sub!==sub){
+                        continue;
+                    }
+                    if( typeof _sitem.callback == "function") {
+                        _sitem.callback(event);
+                    }
+                }
+            }
+        }
     }
 }
 

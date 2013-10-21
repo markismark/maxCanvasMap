@@ -37,6 +37,7 @@ max.Map.prototype = {
         this.dragMap();
         this.scrollMap();
         this._addAllEvent();
+        //this._mousechange();
         var x = function () {
             that.draw.call(that);
             requestAnimFrame(x)
@@ -186,6 +187,9 @@ max.Map.prototype = {
     },
     _addAllEvent:function(){
         var that=this;
+        var targetGrapher=null;
+        var targetLayer=null;
+
         //给事件添加map空间信息
         var addEventAttribute=function(event){
             var pos=max.util.windowToMapClient(that._canvas,event.clientX,event.clientY);
@@ -198,21 +202,90 @@ max.Map.prototype = {
         }
         var addEvent=function(type){
             max.event.addHandler(that._canvas,type,function(event){
+                if(targetLayer===null){
+                    return false;
+                }
                 event=addEventAttribute(event);
-                that._pub.trigger("on"+type,event);
+                event.grapher=targetGrapher;
+                that._pub.triggerDirectToSub(targetLayer._sub,"on"+type,event);
             });
         }
         addEvent("click");
-        addEvent("mouseover");
-        addEvent("mouseon");
+        //addEvent("mouseover");
         addEvent("mouseup");
         addEvent("mousedown");
-        addEvent("mousemove");
-        addEvent("mouseout");
+        //addEvent("mousemove");
+        //addEvent("mouseout");
         addEvent("dbclick");
         addEvent("keydown");
         addEvent("keypress");
         addEvent("keyup");
+
+        max.event.addHandler(this._canvas,"mousemove",function(event){
+            var newGragpher=null;//这一刻event变化是新的，target是旧的
+            var newLayer=null;
+            var pos=max.util.windowToMapClient(that._canvas,event.clientX,event.clientY);
+            var l=that._layers.length;
+            var b=false;
+            for(var i=l-1;i!=-1;--i){
+                var layer=that._layers[i];
+                var g=layer._mousePointInLayer(pos.x,pos.y);
+                if(g!==null){
+                    newGragpher=g;
+                    newLayer= g.parentLayer;
+                    b=true;
+                    break;
+                }
+            }
+            if(!b){
+                if(targetGrapher!==null){
+                    event=addEventAttribute(event);
+                    event.grapher=targetGrapher;
+                    that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
+                }
+                targetGrapher=null;
+                targetLayer=null;
+            }else{
+                if(targetGrapher===null){
+                    event=addEventAttribute(event);
+                    event.grapher=newGragpher;
+                    that._pub.triggerDirectToSub(newLayer._sub,"onmouseover",event);
+                } else if(newGragpher===targetGrapher){
+                    event=addEventAttribute(event);
+                    event.grapher=targetGrapher;
+                    that._pub.triggerDirectToSub(targetLayer._sub,"onmousemove",event);
+                }else{
+                    event=addEventAttribute(event);
+                    event.grapher=targetGrapher;
+                    that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
+
+                    event.grapher=newGragpher;
+                    that._pub.triggerDirectToSub(newLayer._sub,"onmouseover",event);
+                }
+                targetGrapher=newGragpher;
+                targetLayer=newLayer;
+            }
+
+        })
+    },
+    _mousechange:function(){
+        //这里计算鼠标改变时，记录在哪一个grpher上面，作为事件mouseout mouseover前提
+        var that=this;
+        var newGrapher=null;
+        var newLayer=null;
+        max.event.addHandler(this._canvas,"mousemove",function(event){
+            var pos=max.util.windowToMapClient(that._canvas,event.clientX,event.clientY);
+            var l=that._layers.length;
+            for(var i=l-1;i!=-1;--i){
+                var layer=that._layers[i];
+                var g=layer._mousePointInLayer(pos.x,pos.y);
+                if(g!==null){
+                    newGrapher=g;
+                    newLayer= g.parentLayer;
+                    break;
+                }
+            }
+        })
     }
 }
 

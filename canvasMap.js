@@ -31,5 +31,18 @@ max.util = {
         x = num6;
         y = num7 * 57.295779513082323;
         return {x:x,y:y};
+    },
+    clone:function(obj){
+        if( typeof (obj) != 'object' || obj==null)
+        {return obj;}
+
+        var re = {};
+        if(obj.constructor == Array)
+            re = [];
+
+        for(var i in obj) {
+            re[i] = max.util.clone(obj[i]);
+        }
+        return re;
     }
 }
