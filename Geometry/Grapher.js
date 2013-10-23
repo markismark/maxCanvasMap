@@ -6,7 +6,7 @@ max.Geometry.Grapher = function (geometry, attribute, symbol) {
         if (geometry.geometryType === "POINT") {
             this.symbol = new max.Symbol.SimpleMarkerSymbol({fillStyle:'rgba(30,113,240,0.8)', fillSize:8});
         }else if(geometry.geometryType === "LINE"){
-            this.symbol = new max.Symbol.SimpleLineSymbol({fillStyle:'rgba(30,113,240,0.8)', fillSize:8});
+            this.symbol = new max.Symbol.SimpleLineSymbol({lineStyle:'rgba(30,113,240,0.8)', lineWidth:4});
         }else if(geometry.geometry==="POLYGON"){
             this.symbol = new max.Symbol.SimpleFillSymbol({fillStyle:'rgba(30,113,240,0.8)'});
         }

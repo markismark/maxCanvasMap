@@ -32,10 +32,17 @@ max.util = {
         y = num7 * 57.295779513082323;
         return {x:x,y:y};
     },
+    webMercatorToMapClient:function(map,x,y){
+        var x1=(x-map.originPoint.x)/map.resolution;
+        var y1=(map.originPoint.y-y)/map.resolution;
+        return {
+            x:x1,
+            y:y1
+        }
+    },
     clone:function(obj){
         if( typeof (obj) != 'object' || obj==null)
         {return obj;}
-
         var re = {};
         if(obj.constructor == Array)
             re = [];
