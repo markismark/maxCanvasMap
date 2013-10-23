@@ -29,10 +29,10 @@ max.Map.prototype = {
         this.resolution = (this.extent.xmax - this.extent.xmin) / (this._canvas.width);
         this.originPoint = {
             x:this.extent.xmin,
-            y:this.extent.ymin
+            y:this.extent.ymax
         }
         this.extent.xmax = this.extent.xmin + this.resolution * this._canvas.width;
-        this.extent.ymax = this.extent.ymin + this.resolution * this._canvas.height;
+        this.extent.ymin = this.extent.ymax - this.resolution * this._canvas.height;
         var that = this;
         this.dragMap();
         this.scrollMap();
@@ -65,7 +65,7 @@ max.Map.prototype = {
     },
     mapClientToMap:function (point) {
         var x = point.x * this.resolution + this.originPoint.x;
-        var y = point.y * this.resolution + this.originPoint.y;
+        var y = this.originPoint.y-point.y * this.resolution ;
         return {
             x:x,
             y:y
@@ -93,12 +93,12 @@ max.Map.prototype = {
                     var y = pos1.y - pos.y;
                     pos = pos1;
                     that.originPoint.x -= x * that.resolution;
-                    that.originPoint.y -= y * that.resolution;
+                    that.originPoint.y += y * that.resolution;
                     that.extent = {
                         xmin:that.originPoint.x,
-                        ymin:that.originPoint.y,
+                        ymin:that.originPoint.y - that._canvas.height * that.resolution,
                         xmax:that.originPoint.x + that._canvas.width * that.resolution,
-                        ymax:that.originPoint.y + that._canvas.height * that.resolution
+                        ymax:that.originPoint.y
                     }
                     for (var i in that._layers) {
                         var layer = that._layers[i];
@@ -163,9 +163,9 @@ max.Map.prototype = {
             //计算extent 范围
             that.extent = {
                 xmin:newOriginPointX,
-                ymin:newOriginPointY,
+                ymin:newOriginPointY-that._canvas.height * that.resolution,
                 xmax:newOriginPointX + that._canvas.width * that.resolution,
-                ymax:newOriginPointY + that._canvas.height * that.resolution
+                ymax:newOriginPointY
             }
             for (var i in that._layers) {
                 that._layers[i].load();
@@ -194,8 +194,8 @@ max.Map.prototype = {
             var pos=max.util.windowToMapClient(that._canvas,event.clientX,event.clientY);
             event.clientPosition=pos;
             event.mapPosition={
-                x:that.originPoint.x+that.resolution*pos.x,
-                y:that.originPoint.y+that.resolution*pos.y
+                x:that.originPoint.x-that.resolution*pos.x,
+                y:that.originPoint.y-that.resolution*pos.y
             }
             return event;
         }

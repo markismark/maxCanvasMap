@@ -16,15 +16,44 @@ max.Geometry.Point=function(x,y,option){
     this._getWebMercatorPoint();
 }
 max.Geometry.Point.prototype=new max.Geometry.Geometry();
-max.Geometry.Point.prototype.getPath=function(map){
+max.Geometry.Point.prototype.draw=function(map,symbol){
     var x=(this.webMercatorPoint.x-map.originPoint.x)/map.resolution;
-    var y=(this.webMercatorPoint.y-map.originPoint.y)/map.resolution;
+    var y=(map.originPoint.y-this.webMercatorPoint.y)/map.resolution;
+    var context=map._context;
+    if(x<0||y<0||x>map._canvas.width||y>map._canvas.height){
+        return false;
+    }
+    context.save();
+    if(symbol.SymbolType=="SimpleMarkerSymbol"){
+        context.beginPath();
+        context.fillStyle=symbol.fillStyle;
+        if(symbol.style=="CIRCLE"){
+            context.arc(x,y,symbol.fillSize,0,Math.PI*2,true);
+        }
+        context.fill();
+    }else{
+
+    }
+    context.restore();
+
+
+}
+max.Geometry.Point.prototype.getPath=function(map,symbol){
+    var x=(this.webMercatorPoint.x-map.originPoint.x)/map.resolution;
+    var y=(map.originPoint.y-this.webMercatorPoint.y)/map.resolution;
     var context=map._context;
     if(x<0||y<0||x>map._canvas.width||y>map._canvas.height){
         return false;
     }
     context.beginPath();
-    context.arc(x,y,8,0,Math.PI*2,true);
+    if(symbol.SymbolType=="SimpleMarkerSymbol"){
+        context.beginPath();
+        if(symbol.style=="CIRCLE"){
+            context.arc(x,y,symbol.fillSize,0,Math.PI*2,true);
+        }
+    }else{
+
+    }
     return true;
 
 }
@@ -35,4 +64,9 @@ max.Geometry.Point.prototype._getWebMercatorPoint=function(){
     }else if(this.wkid==4326){
         this.webMercatorPoint=max.util.lonLat2WebMercator(this);
     }
+}
+
+
+max.Geometry.Line=function(paths,option){
+    //this.geometryType=
 }

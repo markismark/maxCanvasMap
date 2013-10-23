@@ -12,7 +12,7 @@ max.Layer.BingMapsLayer = function (serviceUrl) {
     });
     this.originPoint = {
         x:-20037508.3427892,
-        y:-20037508.3427892
+        y:20037508.3427892
     }
     this.picWidth = 256;
     this.picHeight = 256;
@@ -47,14 +47,14 @@ max.Layer.BingMapsLayer.prototype._updateImageList = function (rule) {
             var url=this.serviceUrl+"r"+r+"?g=103&mkt=zh-cn&n=z";
 
             var xmin = i * this.picWidth * rule.resolution + this.originPoint.x;
-            var ymin = j * this.picHeight * rule.resolution + this.originPoint.y;
+            var ymax = this.originPoint.y-j * this.picHeight * rule.resolution;
             for (var k in this._imageList) {
                 var _image = this._imageList[k];
                 if (_image.url === url) {
                     break;
                 }
             }
-            var image = new max.Layer._TitleImage(url, this, i, j, rule.z, xmin, ymin);
+            var image = new max.Layer._TitleImage(url, this, i, j, rule.z, xmin, ymax);
             this._imageList.push(image);
         }
     }

@@ -14,7 +14,13 @@ max.Layer.GrapherLayer.prototype.addGraphic=function(grapher){
     this.graphers.push(grapher);
 };
 max.Layer.GrapherLayer.prototype.removeGraphic=function(grapher){
-   //todo
+   for(var i in this.graphers){
+       if(this.graphers[i]===grapher){
+           this.graphers.splice(i,1);
+           return true;
+       }
+   }
+    return false;
 };
 max.Layer.GrapherLayer.prototype.draw=function(){
     for(var i in this.graphers){

@@ -11,6 +11,7 @@ maxCanvasMap
 采用GPL协议，希望你使用的时候，也同样开源。
 ##关于作者
 地理信息系统专业，非常热爱GIS以及互联网技术。
+
 微博 [WEBGIS](http://weibo.com/maxinnb) ，欢迎关注我，等这个写的差不多的时候，写相关的博客
 
 博客地址 [HPhone](http://www.cnblogs.com/HPhone/) 
