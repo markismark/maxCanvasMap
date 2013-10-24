@@ -6,11 +6,9 @@ var extent = new max.Extent({xmin:8338988.713709,
 var layer = new max.Layer.GoogleLayer("http://mt2.google.cn/vt/");
 map.addLayer(layer);
 
-
 var point = new max.Geometry.Point(115, 35, {wkid:4326});
 var grapher = new max.Geometry.Grapher(point);
 grapher.attribute.id = 1;
-;
 
 var point2 = new max.Geometry.Point(10438988, 4557548, {wkid:102100});
 var grapher2 = new max.Geometry.Grapher(point2, {id:2});
@@ -37,6 +35,18 @@ var lineGrapher = new max.Geometry.Grapher(line);
 grapherLayer.addGraphic(lineGrapher);
 
 
+var polygon = new max.Geometry.Polygon([
+    [
+        {x:116, y:40.87},
+        {x:118.8, y:42.05},
+        {x:119.7, y:45.78},
+        {x:118, y:48.55}
+    ]
+])
+var polygonGrapher = new max.Geometry.Grapher(polygon);
+grapherLayer.addGraphic(polygonGrapher);
+
+
 //var grapherLayer2=new max.Layer.GrapherLayer();
 //map.addLayer(grapherLayer2);
 
@@ -60,12 +70,25 @@ grapherLayer.addEventListener("onclick", function (event) {
 })
 grapherLayer.addEventListener("onmouseout", function (event) {
     console.log("mouseout:" + event.grapher.attribute.id);
-    event.grapher.symbol.fillStyle = "rgba(30,113,240,0.8)";
-    event.grapher.symbol.fillSize = "8";
+    if(event.grapher.geometry.geometryType!=="LINE"){
+        event.grapher.symbol.fillStyle = "rgba(30,113,240,0.8)";
+        event.grapher.symbol.fillSize = "8";
+    }else{
+        event.grapher.symbol.lineStyle = "rgba(30,113,240,0.8";
+        event.grapher.symbol.lineWidth=1;
+    }
 })
 grapherLayer.addEventListener("onmouseover", function (event) {
-    event.grapher.symbol.fillStyle = "rgba(12,12,12,0.8)";
-    event.grapher.symbol.fillSize = "12";
+    console.log("mouseout:" + event.grapher.attribute.id);
+    if(event.grapher.geometry.geometryType!=="LINE"){
+        event.grapher.symbol.fillStyle = "rgba(255,12,12,0.6)";
+        event.grapher.symbol.fillSize = "12";
+    }else{
+        event.grapher.symbol.lineStyle = "rgba(255,12,12,0.6)";
+        event.grapher.symbol.lineWidth=5;
+        console.log(event.grapher);
+    }
+
 })
 grapherLayer.addEventListener("onmousemove", function (event) {
     console.log("mousemove:" + event.grapher.attribute.id);

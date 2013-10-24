@@ -51,7 +51,6 @@ max.Geometry.Point.prototype.getPath=function(map,symbol){
     }
     context.beginPath();
     if(symbol.SymbolType=="SimpleMarkerSymbol"){
-        context.beginPath();
         if(symbol.style=="CIRCLE"){
             context.arc(x,y,symbol.fillSize,0,Math.PI*2,true);
         }
@@ -100,7 +99,26 @@ max.Geometry.Line.prototype._getWebMercatorPaths=function(){
     }
 }
 max.Geometry.Line.prototype.getPath=function(map,symbol){
-    return false;
+    var context=map._context;
+    if(symbol.SymbolType=="SimpleLineSymbol"){
+        context.beginPath();
+        for(var i in this.webMercatorPaths){
+            var path= this.webMercatorPaths[i];
+            if(path.length>0){
+                var p=max.util.webMercatorToMapClient(map,path[0].x,path[0].y);
+                context.moveTo(p.x, p.y);
+                var l=path.length;
+                for(var j=1;j!=l;++j){
+                    var p2=max.util.webMercatorToMapClient(map,path[j].x,path[j].y);
+                    context.lineTo(p2.x,p2.y);
+                }
+            }
+        }
+
+    }else{
+
+    }
+    return true;
 }
 max.Geometry.Line.prototype.draw=function(map,symbol){
     var context=map._context;
@@ -124,6 +142,84 @@ max.Geometry.Line.prototype.draw=function(map,symbol){
             }
         }
         context.stroke();
+    }else{
+
+    }
+    context.restore();
+}
+
+
+max.Geometry.Polygon=function(paths,option){
+    this.geometryType="POLYGON";
+    this.paths=paths;
+    if(typeof option !=="undefined"){
+        this.wkid=option.wkid?option.wkid:4326;
+    }else{
+        this.wkid=4326;
+    }
+    this.webMercatorPoint={};
+    this._getWebMercatorPaths();
+}
+max.Geometry.Polygon.prototype=new max.Geometry.Geometry();
+max.Geometry.Polygon.prototype._getWebMercatorPaths=function(option){
+    if(this.wkid==102100){
+        this.webMercatorPaths=this.paths;
+    }else if(this.wkid==4326){
+        var paths=[];
+        for(var i in this.paths){
+            var _path=this.paths[i];
+            var path=[];
+            for(var j in _path){
+                path.push(max.util.lonLat2WebMercator(_path[j]));
+            }
+            paths.push(path);
+        }
+        this.webMercatorPaths=paths;
+    }
+}
+max.Geometry.Polygon.prototype.getPath=function(map,symbol){
+    var context=map._context;
+    if(symbol.SymbolType=="SimpleFillSymbol"){
+        context.beginPath();
+        for(var i in this.webMercatorPaths){
+            var path= this.webMercatorPaths[i];
+            if(path.length>0){
+                var p=max.util.webMercatorToMapClient(map,path[0].x,path[0].y);
+                context.moveTo(p.x, p.y);
+                var l=path.length;
+                for(var j=1;j!=l;++j){
+                    var p2=max.util.webMercatorToMapClient(map,path[j].x,path[j].y);
+                    context.lineTo(p2.x,p2.y);
+                }
+                context.closePath();
+            }
+        }
+
+    }else{
+
+    }
+    return true;
+}
+max.Geometry.Polygon.prototype.draw=function(map,symbol){
+    var context=map._context;
+    context.save();
+    context.fillStyle=symbol.fillStyle;
+    if(symbol.SymbolType=="SimpleFillSymbol"){
+        context.beginPath();
+        for(var i in this.webMercatorPaths){
+            var path= this.webMercatorPaths[i];
+            if(path.length>0){
+                var p=max.util.webMercatorToMapClient(map,path[0].x,path[0].y);
+                context.moveTo(p.x, p.y);
+                var l=path.length;
+                for(var j=1;j!=l;++j){
+                    var p2=max.util.webMercatorToMapClient(map,path[j].x,path[j].y);
+                    context.lineTo(p2.x,p2.y);
+                }
+                context.closePath();
+            }
+        }
+        context.fill();
     }else{
 
     }
