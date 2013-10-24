@@ -12,7 +12,7 @@ window.requestAnimFrame = (function(){
 var max = {};
 max.Map = function (id, extent) {
     this._canvas = document.getElementById(id);
-    this._context = canvas.getContext('2d');
+    this._context = this._canvas.getContext('2d');
     this._layers = [];
     this.extent = extent;
     this.width = canvas.width;
@@ -27,6 +27,12 @@ max.Map = function (id, extent) {
 max.Map.prototype = {
     init:function () {
         this.resolution = (this.extent.xmax - this.extent.xmin) / (this._canvas.width);
+        for(var i in this.resolutions){
+            if(this.resolutions[i]<=this.resolution){
+                this.resolution=this.resolutions[i];
+                break;
+            }
+        }
         this.originPoint = {
             x:this.extent.xmin,
             y:this.extent.ymax
@@ -44,21 +50,35 @@ max.Map.prototype = {
         }
         x();
     },
-    addLayer:function (layer) {
+    addLayer:function (layer,index) {
         for (var i in this._layers) {
             if (this._layers[i] === layer) {
                 return false;
             }
         }
-        this._layers.push(layer);
+        if(typeof index==="undefined"){
+            this._layers.push(layer);
+        }else{
+            this._layers.splice(index,0,layer);
+        }
         layer.parentMap = this;
         this.load(layer);
+    },
+    removeLayer:function(layer){
+        layer.parentMap=null;
+        for (var i in this._layers) {
+            if (this._layers[i] === layer) {
+                this._layers.splice(i,1);
+                return true;
+            }
+        }
+        return false;
     },
     getLayers:function () {
         return this._layers;
     },
     load:function (layer) {
-        layer.load(map);
+        layer.load(this);
     },
     update:function () {
 

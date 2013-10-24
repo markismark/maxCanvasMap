@@ -1,31 +1,69 @@
 <!DOCTYPE>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <title>map</title>
-        <style>
-            body{
-                background: #ddd;
-            }
-            canvas{
-                background: #aaa;
-                border:3px solid #000;
-            }
-        </style>
-    </head>
-    <body>
-        <canvas width="1200" height="1000" id="canvas"></canvas>
-
-        <script type="text/javascript" src="map.js"></script>
-        <script type="text/javascript" src="Event/event.js"></script>
-        <script type="text/javascript" src="Layer/Layer.js"></script>
-        <script type="text/javascript" src="Layer/TileLayer.js"></script>
-        <script type="text/javascript" src="Layer/GoogleLayer.js"></script>
-        <script type="text/javascript" src="Layer/GrapherLayer.js"></script>
-        <script type="text/javascript" src="Geometry/Grapher.js"></script>
-        <script type="text/javascript" src="Geometry/Geometry.js"></script>
-        <script type="text/javascript" src="Symbol/symbol.js"></script>
-        <script type="text/javascript" src="canvasMap.js"></script>
-        <script type="text/javascript" src="example.js"></script>
-    </body>
+	<head>
+		<meta charset='utf-8'>
+		<title>map</title>
+		<link rel="stylesheet" type="text/css" href="example/css/main.css">
+	</head>
+	<body>
+		<div id="top">
+			<div id="logo"><img src="example/image/logo.png" style="width:60px;height: 60px">
+			</div>
+			<div id="logoTitle">
+				maxCanvasMap
+			</div>
+			<div id="seconeTitle">
+				基于HTML5的新一代地图API
+			</div>
+		</div>
+		<canvas id="canvas"></canvas>
+		<div id="wrapper">
+			<div class="wc_wrapper" >
+				<div class="c1">
+					切换底图：
+				</div>
+				<div>
+					<select id="basemaps">
+						<option value="Google">谷歌地图</option>
+						<option value="OpenStreet">OpenStreet</option>
+						<option value="bingmaps">微软Bing Maps</option>
+						<option value="amap">高德</option>
+						<option value="ago">ArcGIS Online</option>
+					</select>
+				</div>
+			</div>
+            <div class="wc_wrapper">
+                <div class="c1">
+                    添加点要素：
+                </div>
+                <div>
+                    <select id="pointNum">
+                        <option value="0">选择点个数</option>
+                        <option value="1000">1000个</option>
+                        <option value="3000">3000个</option>
+                        <option value="5000">5000个</option>
+                        <option value="10000">10000个</option>
+                    </select>
+                </div>
+            </div>
+            <div id="console">
+                <div>开始加载图层</div>
+            </div>
+		</div>
+		<script type="text/javascript" src="src/map.js"></script>
+		<script type="text/javascript" src="src/Event/event.js"></script>
+		<script type="text/javascript" src="src/Layer/Layer.js"></script>
+		<script type="text/javascript" src="src/Layer/TileLayer.js"></script>
+		<script type="text/javascript" src="src/Layer/GoogleLayer.js"></script>
+        <script type="text/javascript" src="src/Layer/OpenStreetLayer.js"></script>
+        <script type="text/javascript" src="src/Layer/BingMapsLayer.js"></script>
+        <script type="text/javascript" src="src/Layer/AMapLayer.js"></script>
+        <script type="text/javascript" src="src/Layer/AGSTileLayer.js"></script>
+		<script type="text/javascript" src="src/Layer/GrapherLayer.js"></script>
+		<script type="text/javascript" src="src/Geometry/Grapher.js"></script>
+		<script type="text/javascript" src="src/Geometry/Geometry.js"></script>
+		<script type="text/javascript" src="src/Symbol/symbol.js"></script>
+		<script type="text/javascript" src="src/util.js"></script>
+		<script type="text/javascript" src="example/js/example.js"></script>
+	</body>
 </html>

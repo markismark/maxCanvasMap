@@ -58,57 +58,67 @@ max.Layer.TileLayer.prototype.updateScale=function(map){
 }
 max.Layer.TileLayer.prototype.load=function(){
     this.updateScale();
-    var o = this._calImage(map);
+    if(this.parentMap){
+        var o = this._calImage(this.parentMap);
+    }else{
+        return false;
+    }
     this._updateImageList(o);
 }
 max.Layer.TileLayer.prototype.draw=function(){
-    for (var i in this._imageList) {
-        var _image = this._imageList[i];
-        var context = this.parentMap._context;
-        if (_image.isonload === true) {
-            context.drawImage(_image.image, 0, 0, this.picWidth, this.picHeight, _image.x, _image.y, this.picWidth / this.scaleRate, this.picHeight / this.scaleRate);
+    if(this.parentMap){
+        for (var i in this._imageList) {
+            var _image = this._imageList[i];
+            var context = this.parentMap._context;
+            if (_image.isonload === true) {
+                context.drawImage(_image.image, 0, 0, this.picWidth, this.picHeight, _image.x, _image.y, this.picWidth / this.scaleRate, this.picHeight / this.scaleRate);
+            }
         }
     }
+
 }
 max.Layer.TileLayer.prototype.ondrag=function(){
     //todo 屏幕闪烁 待解决
-    for (var i = this._imageList.length - 1; i != -1; --i) {
-        var image = this._imageList[i];
-        image.update();
-        if (image.pz !== this.z) {
-            this._imageList.splice(i, 1);
-            delete image;
-            image = null;
-            break;
-        }
-        if (image.x < 0 - image.layer.picWidth * (image.layer.scaleRate)) {
-            this._imageList.splice(i, 1);
-            delete image;
-            image = null;
-            break;
-        }
-        if (image.y < 0 - image.layer.picHeight * (image.layer.scaleRate)) {
-            this._imageList.splice(i, 1);
-            delete image;
-            image = null;
-            break;
-        }
-        if (image.x > image.layer.parentMap._canvas.width * (image.layer.scaleRate)) {
-            this._imageList.splice(i, 1);
-            delete image;
-            image = null;
-            break;
-        }
-        if (image.y > image.layer.parentMap._canvas.height * (image.layer.scaleRate)) {
-            this._imageList.splice(i, 1);
-            delete image;
-            image = null;
-            break;
-        }
+    if(this.parentMap){
+        for (var i = this._imageList.length - 1; i != -1; --i) {
+            var image = this._imageList[i];
+            image.update();
+            if (image.pz !== this.z) {
+                this._imageList.splice(i, 1);
+                delete image;
+                image = null;
+                break;
+            }
+            if (image.x < 0 - image.layer.picWidth * (image.layer.scaleRate)) {
+                this._imageList.splice(i, 1);
+                delete image;
+                image = null;
+                break;
+            }
+            if (image.y < 0 - image.layer.picHeight * (image.layer.scaleRate)) {
+                this._imageList.splice(i, 1);
+                delete image;
+                image = null;
+                break;
+            }
+            if (image.x > image.layer.parentMap._canvas.width * (image.layer.scaleRate)) {
+                this._imageList.splice(i, 1);
+                delete image;
+                image = null;
+                break;
+            }
+            if (image.y > image.layer.parentMap._canvas.height * (image.layer.scaleRate)) {
+                this._imageList.splice(i, 1);
+                delete image;
+                image = null;
+                break;
+            }
 
+        }
+        var o = this._calImage(this.parentMap);
+        this._updateImageList(o);
     }
-    var o = this._calImage(map);
-    this._updateImageList(o);
+
 }
 
 
@@ -136,11 +146,14 @@ max.Layer._TitleImage.prototype = {
         that.update.call(that);
     },
     update:function () {
-        var map = this.layer.parentMap;
-        var point = map.originPoint;
-        var x = (this.xmin - point.x) / map.resolution;
-        var y = ( point.y-this.ymax) / map.resolution;
-        this.x = x;
-        this.y = y;
+        if(this.layer.parentMap){
+            var map = this.layer.parentMap;
+            var point = map.originPoint;
+            var x = (this.xmin - point.x) / map.resolution;
+            var y = ( point.y-this.ymax) / map.resolution;
+            this.x = x;
+            this.y = y;
+        }
+
     }
 }
