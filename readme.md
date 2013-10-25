@@ -8,7 +8,6 @@
 ##滤镜
 可以添加滤镜效果，只不过有的滤镜运行一次世间较长，浏览器就卡住不到了。另外涉及到跨域问题，瓦片服务器一定要支持跨域，目前我看见的也只有Google和OpenStreet支持。
 ##使用代码
-‘
 	var extent = new max.Extent({
 		xmin : 10762435.858420863,
 		ymin : 3415567.428002159,
@@ -104,7 +103,6 @@
 	graphicsLayer.addEventListener("onmousemove", function(event) {
 		mconsole("发生了onmousemove事件：对象为"+"第"+event.graphics.attribute.id+"要素");
 	})
-’
 ##测试
 动态加载1000个点，仅需要79毫秒，加载3000个点，需要500毫秒，10000个点，需要6秒。但是所有的点一旦加载上了，拖动没有任何的卡感。
 ##开源协议
