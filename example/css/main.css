@@ -67,3 +67,12 @@ canvas{
     border-top:3px solid #e2e2e2;
     overflow-x: hidden;
 }
+#myself img{
+    width:66px;
+    height:66px;
+}
+#myself{
+    position: absolute;
+    top:13px;
+    right:20px;
+}

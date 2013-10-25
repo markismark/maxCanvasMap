@@ -1,17 +1,117 @@
-maxCanvasMap
+ï»¿maxCanvasMap
 =================================== 
-Ê¹ÓÃHtml5¼¼Êõ¼ÓÔØµØÍ¼£¬Ä¿Ç°¿É¼ÓÔØGoogle,Bing Maps£¬Open Street,ArcGIS OnlineµÈÖ÷Á÷µØÍ¼·şÎñ¡£¶ÔÓÚÄÇĞ©Ã»ÓĞÕÒµ½ÏàÓ¦µÄÇĞÍ¼Ô­µã£¬¾Í²»ºÃÒâË¼ÁË£¬µ«ÊÇÈç¹ûÄãÖªµÀµÄ»°£¬Ï£ÍûÄÜµÃµ½ÄãµÄ·´À¡£¬ÎÒµÄÓÊÏämaxinvc@126.com£¬µ±È»¶¯Ì¬À©Õ¹Í¼²ãÒ²ÊÇÊ®·ÖÈİÒ×µÄ¡£
-##ÊÂ¼ş
-Ä¿Ç°ÒÑ¾­ÊµÏÖ¹ØÓÚÊó±ê£¬¼üÅÌËùÓĞµÄÊÂ¼ş¡£Î´À´Ìí¼Óonload£¬onaddµÈÊÂ¼ş¡£
-##ÏÂÒ»²½¹¤×÷
-Ìí¼ÓÏàÓ¦symbolÀà£¬ÒÔ¼°infowindow¡£
-##²âÊÔ
-¶¯Ì¬¼ÓÔØ1000¸öµã£¬½öĞèÒª79ºÁÃë£¬¼ÓÔØ3000¸öµã£¬ĞèÒª500ºÁÃë£¬10000¸öµã£¬ĞèÒª6Ãë¡£µ«ÊÇËùÓĞµÄµãÒ»µ©¼ÓÔØÉÏÁË£¬ÍÏ¶¯Ã»ÓĞÈÎºÎµÄ¿¨¸Ğ¡£
-##¿ªÔ´Ğ­Òé
-²ÉÓÃGPLĞ­Òé£¬Ï£ÍûÄãÊ¹ÓÃµÄÊ±ºò£¬Ò²Í¬Ñù¿ªÔ´¡£
-##¹ØÓÚ×÷Õß
-µØÀíĞÅÏ¢ÏµÍ³×¨Òµ£¬·Ç³£ÈÈ°®GISÒÔ¼°»¥ÁªÍø¼¼Êõ¡£
+ä½¿ç”¨Html5æŠ€æœ¯åŠ è½½åœ°å›¾ï¼Œç›®å‰å¯åŠ è½½Google,Bing Mapsï¼ŒOpen Street,ArcGIS Onlineç­‰ä¸»æµåœ°å›¾æœåŠ¡ã€‚å¯¹äºé‚£äº›æ²¡æœ‰æ‰¾åˆ°ç›¸åº”çš„åˆ‡å›¾åŸç‚¹ï¼Œå°±ä¸å¥½æ„æ€äº†ï¼Œä½†æ˜¯å¦‚æœä½ çŸ¥é“çš„è¯ï¼Œå¸Œæœ›èƒ½å¾—åˆ°ä½ çš„åé¦ˆï¼Œæˆ‘çš„é‚®ç®±maxinvc@126.comï¼Œå½“ç„¶åŠ¨æ€æ‰©å±•å›¾å±‚ä¹Ÿæ˜¯ååˆ†å®¹æ˜“çš„ã€‚
+##äº‹ä»¶
+ç›®å‰å·²ç»å®ç°å…³äºé¼ æ ‡ï¼Œé”®ç›˜æ‰€æœ‰çš„äº‹ä»¶ã€‚æœªæ¥æ·»åŠ onloadï¼Œonaddç­‰äº‹ä»¶ã€‚
+##ä¸‹ä¸€æ­¥å·¥ä½œ
+ä¸°å¯Œsymbolç±»ï¼Œä»¥åŠinfowindowã€‚
+##æ»¤é•œ
+å¯ä»¥æ·»åŠ æ»¤é•œæ•ˆæœï¼Œåªä¸è¿‡æœ‰çš„æ»¤é•œè¿è¡Œä¸€æ¬¡ä¸–é—´è¾ƒé•¿ï¼Œæµè§ˆå™¨å°±å¡ä½ä¸åˆ°äº†ã€‚å¦å¤–æ¶‰åŠåˆ°è·¨åŸŸé—®é¢˜ï¼Œç“¦ç‰‡æœåŠ¡å™¨ä¸€å®šè¦æ”¯æŒè·¨åŸŸï¼Œç›®å‰æˆ‘çœ‹è§çš„ä¹Ÿåªæœ‰Googleå’ŒOpenStreetæ”¯æŒã€‚
+##ä½¿ç”¨ä»£ç 
+â€˜
+	var extent = new max.Extent({
+		xmin : 10762435.858420863,
+		ymin : 3415567.428002159,
+		xmax : 17135450.014862295,
+		ymax : 6351564.966545691
+	});
+	map = new max.Map("canvas", extent);
+	layer = new max.Layer.GoogleLayer("http://mt2.google.cn/vt/");
+	map.addLayer(layer);
 
-Î¢²© [WEBGIS](http://weibo.com/maxinnb) £¬»¶Ó­¹Ø×¢ÎÒ£¬µÈÕâ¸öĞ´µÄ²î²»¶àµÄÊ±ºò£¬Ğ´Ïà¹ØµÄ²©¿Í
+	var point = new max.Geometry.Point(115, 35, {
+		wkid : 4326
+	});
+	var graphics = new max.Geometry.Graphics(point);
+	graphics.attribute.id = 1;
 
-²©¿ÍµØÖ· [HPhone](http://www.cnblogs.com/HPhone/) 
+	var point2 = new max.Geometry.Point(10438988, 4557548, {
+		wkid : 102100
+	});
+	var graphics2 = new max.Geometry.Graphics(point2, {
+		id : 2
+	});
+
+	graphicsLayer = new max.Layer.GraphicsLayer();
+	graphicsLayer.addGraphic(graphics);
+	graphicsLayer.addGraphic(graphics2);
+	map.addLayer(graphicsLayer);
+
+	var line = new max.Geometry.Line([[{
+		x : 117.5,
+		y : 38.6
+	}, {
+		x : 118,
+		y : 36
+	}, {
+		x : 119,
+		y : 37
+	}], [{
+		x : 129.5,
+		y : 39.6
+	}, {
+		x : 106,
+		y : 37
+	}, {
+		x : 111,
+		y : 36.4
+	}]]);
+	var lineGraphics = new max.Geometry.Graphics(line,{id:3});
+	graphicsLayer.addGraphic(lineGraphics);
+
+	var polygon = new max.Geometry.Polygon([[{
+		x : 116,
+		y : 40.87
+	}, {
+		x : 118.8,
+		y : 42.05
+	}, {
+		x : 119.7,
+		y : 45.78
+	}, {
+		x : 118,
+		y : 48.55
+	}]])
+	var polygonGraphics = new max.Geometry.Graphics(polygon,{id:4});
+	graphicsLayer.addGraphic(polygonGraphics);
+
+
+	graphicsLayer.addEventListener("onclick", function(event) {
+		mconsole("å‘ç”Ÿäº†onclickäº‹ä»¶ï¼šå¯¹è±¡ä¸º"+"ç¬¬"+event.graphics.attribute.id+"è¦ç´ ");
+	})
+	graphicsLayer.addEventListener("onmouseout", function(event) {
+		mconsole("å‘ç”Ÿäº†onmouseoutäº‹ä»¶ï¼šå¯¹è±¡ä¸º"+"ç¬¬"+event.graphics.attribute.id+"è¦ç´ ");
+		if(event.graphics.geometry.geometryType !== "LINE") {
+			event.graphics.symbol.fillStyle = "rgba(30,113,240,0.8)";
+			event.graphics.symbol.fillSize = "8";
+		} else {
+			event.graphics.symbol.lineStyle = "rgba(30,113,240,0.8";
+			event.graphics.symbol.lineWidth = 4;
+		}
+	})
+	graphicsLayer.addEventListener("onmouseover", function(event) {
+		mconsole("å‘ç”Ÿäº†onmouseoveräº‹ä»¶ï¼šå¯¹è±¡ä¸º"+"ç¬¬"+event.graphics.attribute.id+"è¦ç´ ");
+		if(event.graphics.geometry.geometryType !== "LINE") {
+			event.graphics.symbol.fillStyle = "rgba(255,12,12,0.6)";
+			event.graphics.symbol.fillSize = "12";
+		} else {
+			event.graphics.symbol.lineStyle = "rgba(255,12,12,0.6)";
+			event.graphics.symbol.lineWidth = 8;
+			console.log(event.graphics);
+		}
+
+	})
+	graphicsLayer.addEventListener("onmousemove", function(event) {
+		mconsole("å‘ç”Ÿäº†onmousemoveäº‹ä»¶ï¼šå¯¹è±¡ä¸º"+"ç¬¬"+event.graphics.attribute.id+"è¦ç´ ");
+	})
+â€™
+##æµ‹è¯•
+åŠ¨æ€åŠ è½½1000ä¸ªç‚¹ï¼Œä»…éœ€è¦79æ¯«ç§’ï¼ŒåŠ è½½3000ä¸ªç‚¹ï¼Œéœ€è¦500æ¯«ç§’ï¼Œ10000ä¸ªç‚¹ï¼Œéœ€è¦6ç§’ã€‚ä½†æ˜¯æ‰€æœ‰çš„ç‚¹ä¸€æ—¦åŠ è½½ä¸Šäº†ï¼Œæ‹–åŠ¨æ²¡æœ‰ä»»ä½•çš„å¡æ„Ÿã€‚
+##å¼€æºåè®®
+é‡‡ç”¨GPLåè®®ï¼Œå¸Œæœ›ä½ ä½¿ç”¨çš„æ—¶å€™ï¼Œä¹ŸåŒæ ·å¼€æºã€‚
+##å…³äºä½œè€…
+åœ°ç†ä¿¡æ¯ç³»ç»Ÿä¸“ä¸šï¼Œéå¸¸çƒ­çˆ±GISä»¥åŠäº’è”ç½‘æŠ€æœ¯ã€‚
+
+å¾®åš [WEBGIS](http://weibo.com/maxinnb) ï¼Œæ¬¢è¿å…³æ³¨æˆ‘ï¼Œç­‰è¿™ä¸ªå†™çš„å·®ä¸å¤šçš„æ—¶å€™ï¼Œå†™ç›¸å…³çš„åšå®¢
+
+åšå®¢åœ°å€ [HPhone](http://www.cnblogs.com/HPhone/) 
