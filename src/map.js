@@ -22,6 +22,7 @@ max.Map = function (id, extent) {
     this.wkid = 102100;
     this._pub=new max.event.Publisher();
     this._sub=new max.event.Subscriber();
+    this.filter=null;
 }
 
 max.Map.prototype = {
@@ -59,6 +60,10 @@ max.Map.prototype = {
         if(typeof index==="undefined"){
             this._layers.push(layer);
         }else{
+            if(index<0){
+                index=0;
+            }
+            index=index>this._layers.length?this._layers.length:index;
             this._layers.splice(index,0,layer);
         }
         layer.parentMap = this;
@@ -73,6 +78,13 @@ max.Map.prototype = {
             }
         }
         return false;
+    },
+    removeLayerByIndex:function(index){
+        if(index>=this._layers.length||index<0){
+            return false;
+        }else{
+            this._layers.splice(index,0,layer);
+        }
     },
     getLayers:function () {
         return this._layers;
@@ -97,7 +109,15 @@ max.Map.prototype = {
             var layer = this._layers[i];
             layer.draw();
         }
+        if(typeof this.filter==="function"){
+            try{
+                var idata=this._context.getImageData(0,0,this._canvas.width,this._canvas.height);
+                idata=this.filter(idata);
+                this._context.putImageData(idata,0,0);
+            }catch(e){
 
+            }
+        }
     },
     dragMap:function () {
         var pos = null;
@@ -207,7 +227,7 @@ max.Map.prototype = {
     },
     _addAllEvent:function(){
         var that=this;
-        var targetGrapher=null;
+        var targetGraphics=null;
         var targetLayer=null;
         //给事件添加map空间信息
         var addEventAttribute=function(event){
@@ -225,7 +245,7 @@ max.Map.prototype = {
                     return false;
                 }
                 event=addEventAttribute(event);
-                event.grapher=targetGrapher;
+                event.graphics=targetGraphics;
                 that._pub.triggerDirectToSub(targetLayer._sub,"on"+type,event);
             });
         }
@@ -254,41 +274,41 @@ max.Map.prototype = {
                 }
             }
             if(!b){
-                if(targetGrapher!==null){
+                if(targetGraphics!==null){
                     event=addEventAttribute(event);
-                    event.grapher=targetGrapher;
+                    event.graphics=targetGraphics;
                     that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
                 }
-                targetGrapher=null;
+                targetGraphics=null;
                 targetLayer=null;
             }else{
-                if(targetGrapher===null){
+                if(targetGraphics===null){
                     event=addEventAttribute(event);
-                    event.grapher=newGragpher;
+                    event.graphics=newGragpher;
                     that._pub.triggerDirectToSub(newLayer._sub,"onmouseover",event);
-                } else if(newGragpher===targetGrapher){
+                } else if(newGragpher===targetGraphics){
                     event=addEventAttribute(event);
-                    event.grapher=targetGrapher;
+                    event.graphics=targetGraphics;
                     that._pub.triggerDirectToSub(targetLayer._sub,"onmousemove",event);
                 }else{
                     event=addEventAttribute(event);
-                    event.grapher=targetGrapher;
+                    event.graphics=targetGraphics;
                     that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
 
-                    event.grapher=newGragpher;
+                    event.graphics=newGragpher;
                     that._pub.triggerDirectToSub(newLayer._sub,"onmouseover",event);
                 }
-                targetGrapher=newGragpher;
+                targetGraphics=newGragpher;
                 targetLayer=newLayer;
             }
 
         })
         max.event.addHandler(this._canvas,"mouseout",function(evebt){
-            if(targetGrapher!==null){
+            if(targetGraphics!==null){
                 event=addEventAttribute(event);
-                event.grapher=targetGrapher;
+                event.graphics=targetGraphics;
                 that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
-                targetGrapher=null;
+                targetGraphics=null;
                 targetLayer=null;
             }
 

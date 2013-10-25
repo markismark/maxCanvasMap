@@ -4,6 +4,7 @@
 max.Layer.OpenStreetLayer = function (serviceUrl) {
     this.serviceUrl = serviceUrl;
     this._imageList = [];
+    this.cors=true;
     this.fullExtent = new max.Extent({
         xmin:-20037508.3427892,
         ymin:-20037508.3427892,
@@ -36,7 +37,7 @@ max.Layer.OpenStreetLayer.prototype._updateImageList = function (rule) {
                     break;
                 }
             }
-            var image = new max.Layer._TitleImage(url, this, i, j, rule.z, xmin, ymax);
+            var image = new max.Layer._TitleImage(url, this, i, j, rule.z, xmin, ymax,this.cors);
             this._imageList.push(image);
         }
     }

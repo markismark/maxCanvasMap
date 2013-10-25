@@ -46,24 +46,43 @@
                     </select>
                 </div>
             </div>
+            <div class="wc_wrapper">
+                <div class="c1">
+                    滤镜效果：
+                </div>
+                <div>
+                    <select id="filter">
+                        <option value="">选择滤镜效果</option>
+                        <option value="colorInvert">反色</option>
+                        <option value="gray">灰色</option>
+                        <option value="blur">模糊</option>
+                    </select>
+                </div>
+            </div>
+            <div class="wc_wrapper">
+                <button onclick="clearConsole()">清除控制台</button>
+                <button onclick="clearFeature()">清除要素</button>
+            </div>
             <div id="console">
                 <div>开始加载图层</div>
             </div>
 		</div>
-		<script type="text/javascript" src="src/map.js"></script>
-		<script type="text/javascript" src="src/Event/event.js"></script>
-		<script type="text/javascript" src="src/Layer/Layer.js"></script>
-		<script type="text/javascript" src="src/Layer/TileLayer.js"></script>
-		<script type="text/javascript" src="src/Layer/GoogleLayer.js"></script>
-        <script type="text/javascript" src="src/Layer/OpenStreetLayer.js"></script>
-        <script type="text/javascript" src="src/Layer/BingMapsLayer.js"></script>
-        <script type="text/javascript" src="src/Layer/AMapLayer.js"></script>
-        <script type="text/javascript" src="src/Layer/AGSTileLayer.js"></script>
-		<script type="text/javascript" src="src/Layer/GrapherLayer.js"></script>
-		<script type="text/javascript" src="src/Geometry/Grapher.js"></script>
-		<script type="text/javascript" src="src/Geometry/Geometry.js"></script>
-		<script type="text/javascript" src="src/Symbol/symbol.js"></script>
-		<script type="text/javascript" src="src/util.js"></script>
+		<!--<script type="text/javascript" src="src/map.js"></script>-->
+		<!--<script type="text/javascript" src="src/Event/event.js"></script>-->
+		<!--<script type="text/javascript" src="src/Layer/Layer.js"></script>-->
+		<!--<script type="text/javascript" src="src/Layer/TileLayer.js"></script>-->
+		<!--<script type="text/javascript" src="src/Layer/GoogleLayer.js"></script>-->
+        <!--<script type="text/javascript" src="src/Layer/OpenStreetLayer.js"></script>-->
+        <!--<script type="text/javascript" src="src/Layer/BingMapsLayer.js"></script>-->
+        <!--<script type="text/javascript" src="src/Layer/AMapLayer.js"></script>-->
+        <!--<script type="text/javascript" src="src/Layer/AGSTileLayer.js"></script>-->
+		<!--<script type="text/javascript" src="src/Layer/GraphicsLayer.js"></script>-->
+		<!--<script type="text/javascript" src="src/Geometry/Graphics.js"></script>-->
+		<!--<script type="text/javascript" src="src/Geometry/Geometry.js"></script>-->
+		<!--<script type="text/javascript" src="src/Symbol/symbol.js"></script>-->
+		<!--<script type="text/javascript" src="src/util.js"></script>-->
+        <!--<script type="text/javascript" src="src/Filter.js"></script>-->
+        <script type="text/javascript" src="canvasMap-min.js"></script>
 		<script type="text/javascript" src="example/js/example.js"></script>
 	</body>
 </html>

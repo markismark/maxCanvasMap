@@ -6,6 +6,7 @@ max.Layer.TileLayer = function (serviceUrl) {
     this.parentMap = null;
     this._imageList = [];
     this.scaleRate = 1;
+    this.cors=false;//是否支持跨域
 }
 max.Layer.TileLayer.prototype=new max.Layer();
 max.Layer.TileLayer.prototype.init=function(){
@@ -122,8 +123,11 @@ max.Layer.TileLayer.prototype.ondrag=function(){
 }
 
 
-max.Layer._TitleImage = function (url, layer, x, y, z, xmin, ymax) {
+max.Layer._TitleImage = function (url, layer, x, y, z, xmin, ymax,cors) {
     this.image = new Image();
+    if(cors===true){
+        this.image.crossOrigin="Anonymous";
+    }
     var that = this;
     this.image.onload = function () {
         that.imageOnLoad(that);

@@ -22,11 +22,18 @@ max.Map = function (id, extent) {
     this.wkid = 102100;
     this._pub=new max.event.Publisher();
     this._sub=new max.event.Subscriber();
+    this.filter=null;
 }
 
 max.Map.prototype = {
     init:function () {
         this.resolution = (this.extent.xmax - this.extent.xmin) / (this._canvas.width);
+        for(var i in this.resolutions){
+            if(this.resolutions[i]<=this.resolution){
+                this.resolution=this.resolutions[i];
+                break;
+            }
+        }
         this.originPoint = {
             x:this.extent.xmin,
             y:this.extent.ymax
@@ -44,15 +51,40 @@ max.Map.prototype = {
         }
         x();
     },
-    addLayer:function (layer) {
+    addLayer:function (layer,index) {
         for (var i in this._layers) {
             if (this._layers[i] === layer) {
                 return false;
             }
         }
-        this._layers.push(layer);
+        if(typeof index==="undefined"){
+            this._layers.push(layer);
+        }else{
+            if(index<0){
+                index=0;
+            }
+            index=index>this._layers.length?this._layers.length:index;
+            this._layers.splice(index,0,layer);
+        }
         layer.parentMap = this;
         this.load(layer);
+    },
+    removeLayer:function(layer){
+        layer.parentMap=null;
+        for (var i in this._layers) {
+            if (this._layers[i] === layer) {
+                this._layers.splice(i,1);
+                return true;
+            }
+        }
+        return false;
+    },
+    removeLayerByIndex:function(index){
+        if(index>=this._layers.length||index<0){
+            return false;
+        }else{
+            this._layers.splice(index,0,layer);
+        }
     },
     getLayers:function () {
         return this._layers;
@@ -77,7 +109,15 @@ max.Map.prototype = {
             var layer = this._layers[i];
             layer.draw();
         }
+        if(typeof this.filter==="function"){
+            try{
+                var idata=this._context.getImageData(0,0,this._canvas.width,this._canvas.height);
+                idata=this.filter(idata);
+                this._context.putImageData(idata,0,0);
+            }catch(e){
 
+            }
+        }
     },
     dragMap:function () {
         var pos = null;
@@ -187,7 +227,7 @@ max.Map.prototype = {
     },
     _addAllEvent:function(){
         var that=this;
-        var targetGrapher=null;
+        var targetGraphics=null;
         var targetLayer=null;
         //给事件添加map空间信息
         var addEventAttribute=function(event){
@@ -205,7 +245,7 @@ max.Map.prototype = {
                     return false;
                 }
                 event=addEventAttribute(event);
-                event.grapher=targetGrapher;
+                event.graphics=targetGraphics;
                 that._pub.triggerDirectToSub(targetLayer._sub,"on"+type,event);
             });
         }
@@ -234,41 +274,41 @@ max.Map.prototype = {
                 }
             }
             if(!b){
-                if(targetGrapher!==null){
+                if(targetGraphics!==null){
                     event=addEventAttribute(event);
-                    event.grapher=targetGrapher;
+                    event.graphics=targetGraphics;
                     that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
                 }
-                targetGrapher=null;
+                targetGraphics=null;
                 targetLayer=null;
             }else{
-                if(targetGrapher===null){
+                if(targetGraphics===null){
                     event=addEventAttribute(event);
-                    event.grapher=newGragpher;
+                    event.graphics=newGragpher;
                     that._pub.triggerDirectToSub(newLayer._sub,"onmouseover",event);
-                } else if(newGragpher===targetGrapher){
+                } else if(newGragpher===targetGraphics){
                     event=addEventAttribute(event);
-                    event.grapher=targetGrapher;
+                    event.graphics=targetGraphics;
                     that._pub.triggerDirectToSub(targetLayer._sub,"onmousemove",event);
                 }else{
                     event=addEventAttribute(event);
-                    event.grapher=targetGrapher;
+                    event.graphics=targetGraphics;
                     that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
 
-                    event.grapher=newGragpher;
+                    event.graphics=newGragpher;
                     that._pub.triggerDirectToSub(newLayer._sub,"onmouseover",event);
                 }
-                targetGrapher=newGragpher;
+                targetGraphics=newGragpher;
                 targetLayer=newLayer;
             }
 
         })
         max.event.addHandler(this._canvas,"mouseout",function(evebt){
-            if(targetGrapher!==null){
+            if(targetGraphics!==null){
                 event=addEventAttribute(event);
-                event.grapher=targetGrapher;
+                event.graphics=targetGraphics;
                 that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
-                targetGrapher=null;
+                targetGraphics=null;
                 targetLayer=null;
             }
 
@@ -465,7 +505,6 @@ max.event.Publisher.prototype = {
         }
     }
 }
-
 max.Layer = function () {
     this._sub = new max.event.Subscriber();
     this._eventList = [];
@@ -498,6 +537,7 @@ max.Layer.TileLayer = function (serviceUrl) {
     this.parentMap = null;
     this._imageList = [];
     this.scaleRate = 1;
+    this.cors=false;//是否支持跨域
 }
 max.Layer.TileLayer.prototype=new max.Layer();
 max.Layer.TileLayer.prototype.init=function(){
@@ -550,62 +590,75 @@ max.Layer.TileLayer.prototype.updateScale=function(map){
 }
 max.Layer.TileLayer.prototype.load=function(){
     this.updateScale();
-    var o = this._calImage(this.parentMap);
+    if(this.parentMap){
+        var o = this._calImage(this.parentMap);
+    }else{
+        return false;
+    }
     this._updateImageList(o);
 }
 max.Layer.TileLayer.prototype.draw=function(){
-    for (var i in this._imageList) {
-        var _image = this._imageList[i];
-        var context = this.parentMap._context;
-        if (_image.isonload === true) {
-            context.drawImage(_image.image, 0, 0, this.picWidth, this.picHeight, _image.x, _image.y, this.picWidth / this.scaleRate, this.picHeight / this.scaleRate);
+    if(this.parentMap){
+        for (var i in this._imageList) {
+            var _image = this._imageList[i];
+            var context = this.parentMap._context;
+            if (_image.isonload === true) {
+                context.drawImage(_image.image, 0, 0, this.picWidth, this.picHeight, _image.x, _image.y, this.picWidth / this.scaleRate, this.picHeight / this.scaleRate);
+            }
         }
     }
+
 }
 max.Layer.TileLayer.prototype.ondrag=function(){
     //todo 屏幕闪烁 待解决
-    for (var i = this._imageList.length - 1; i != -1; --i) {
-        var image = this._imageList[i];
-        image.update();
-        if (image.pz !== this.z) {
-            this._imageList.splice(i, 1);
-            delete image;
-            image = null;
-            break;
-        }
-        if (image.x < 0 - image.layer.picWidth * (image.layer.scaleRate)) {
-            this._imageList.splice(i, 1);
-            delete image;
-            image = null;
-            break;
-        }
-        if (image.y < 0 - image.layer.picHeight * (image.layer.scaleRate)) {
-            this._imageList.splice(i, 1);
-            delete image;
-            image = null;
-            break;
-        }
-        if (image.x > image.layer.parentMap._canvas.width * (image.layer.scaleRate)) {
-            this._imageList.splice(i, 1);
-            delete image;
-            image = null;
-            break;
-        }
-        if (image.y > image.layer.parentMap._canvas.height * (image.layer.scaleRate)) {
-            this._imageList.splice(i, 1);
-            delete image;
-            image = null;
-            break;
-        }
+    if(this.parentMap){
+        for (var i = this._imageList.length - 1; i != -1; --i) {
+            var image = this._imageList[i];
+            image.update();
+            if (image.pz !== this.z) {
+                this._imageList.splice(i, 1);
+                delete image;
+                image = null;
+                break;
+            }
+            if (image.x < 0 - image.layer.picWidth * (image.layer.scaleRate)) {
+                this._imageList.splice(i, 1);
+                delete image;
+                image = null;
+                break;
+            }
+            if (image.y < 0 - image.layer.picHeight * (image.layer.scaleRate)) {
+                this._imageList.splice(i, 1);
+                delete image;
+                image = null;
+                break;
+            }
+            if (image.x > image.layer.parentMap._canvas.width * (image.layer.scaleRate)) {
+                this._imageList.splice(i, 1);
+                delete image;
+                image = null;
+                break;
+            }
+            if (image.y > image.layer.parentMap._canvas.height * (image.layer.scaleRate)) {
+                this._imageList.splice(i, 1);
+                delete image;
+                image = null;
+                break;
+            }
 
+        }
+        var o = this._calImage(this.parentMap);
+        this._updateImageList(o);
     }
-    var o = this._calImage(this.parentMap);
-    this._updateImageList(o);
+
 }
 
 
-max.Layer._TitleImage = function (url, layer, x, y, z, xmin, ymax) {
+max.Layer._TitleImage = function (url, layer, x, y, z, xmin, ymax,cors) {
     this.image = new Image();
+    if(cors===true){
+        this.image.crossOrigin="Anonymous";
+    }
     var that = this;
     this.image.onload = function () {
         that.imageOnLoad(that);
@@ -628,12 +681,15 @@ max.Layer._TitleImage.prototype = {
         that.update.call(that);
     },
     update:function () {
-        var map = this.layer.parentMap;
-        var point = map.originPoint;
-        var x = (this.xmin - point.x) / map.resolution;
-        var y = ( point.y-this.ymax) / map.resolution;
-        this.x = x;
-        this.y = y;
+        if(this.layer.parentMap){
+            var map = this.layer.parentMap;
+            var point = map.originPoint;
+            var x = (this.xmin - point.x) / map.resolution;
+            var y = ( point.y-this.ymax) / map.resolution;
+            this.x = x;
+            this.y = y;
+        }
+
     }
 }
 /**
@@ -642,6 +698,7 @@ max.Layer._TitleImage.prototype = {
 max.Layer.GoogleLayer = function (serviceUrl) {
     this.serviceUrl = serviceUrl;
     this._imageList = [];
+    this.cors=true;
     this.fullExtent = new max.Extent({
         xmin:-20037508.3427892,
         ymin:-20037508.3427892,
@@ -674,7 +731,51 @@ max.Layer.GoogleLayer.prototype._updateImageList = function (rule) {
                     break;
                 }
             }
-            var image = new max.Layer._TitleImage(url, this, i, j, rule.z, xmin, ymax);
+            var image = new max.Layer._TitleImage(url, this, i, j, rule.z, xmin, ymax,this.cors);
+            this._imageList.push(image);
+        }
+    }
+}
+/**
+ * 支持Open Street地图
+ */
+max.Layer.OpenStreetLayer = function (serviceUrl) {
+    this.serviceUrl = serviceUrl;
+    this._imageList = [];
+    this.cors=true;
+    this.fullExtent = new max.Extent({
+        xmin:-20037508.3427892,
+        ymin:-20037508.3427892,
+        xmax:20037508.3427892,
+        ymax:20037508.3427892
+    });
+    this.originPoint = {
+        x:-20037508.3427892,
+        y:20037508.3427892
+    }
+    this.picWidth = 256;
+    this.picHeight = 256;
+    this.wkid = 102100;
+    this.resolutions = [78271.51696402031, 39135.75848201016, 19567.87924100508, 9783.939620502539, 4891.96981025127, 2445.984905125635, 1222.992452562817, 611.4962262814087, 305.7481131407043, 152.8740565703522, 76.43702828517608, 38.21851414258804, 19.10925707129402, 9.554628535647009];
+    this.init();
+}
+
+max.Layer.OpenStreetLayer.prototype = new max.Layer.TileLayer();
+
+max.Layer.OpenStreetLayer.prototype._updateImageList = function (rule) {
+    this._imageList = [];
+    for (var i = rule.lmin; i <= rule.lmax; ++i) {
+        for (var j = rule.dmin; j <= rule.dmax; ++j) {
+            var url = this.serviceUrl+"/"+rule.z+"/"+i+"/"+j+".jpg";
+            var xmin = i * this.picWidth * rule.resolution + this.originPoint.x;
+            var ymax = this.originPoint.y-j * this.picHeight * rule.resolution;
+            for (var k in this._imageList) {
+                var _image = this._imageList[k];
+                if (_image.url === url) {
+                    break;
+                }
+            }
+            var image = new max.Layer._TitleImage(url, this, i, j, rule.z, xmin, ymax,this.cors);
             this._imageList.push(image);
         }
     }
@@ -685,6 +786,7 @@ max.Layer.GoogleLayer.prototype._updateImageList = function (rule) {
 max.Layer.BingMapsLayer = function (serviceUrl) {
     this.serviceUrl = serviceUrl;
     this._imageList = [];
+    this.cors=false;
     this.fullExtent = new max.Extent({
         xmin:-20037508.3427892,
         ymin:-20037508.3427892,
@@ -746,6 +848,7 @@ max.Layer.BingMapsLayer.prototype._updateImageList = function (rule) {
 max.Layer.AMapLayer = function (serviceUrl) {
     this.serviceUrl = serviceUrl;
     this._imageList = [];
+    this.cors=false;
     this.fullExtent = new max.Extent({
         xmin:-20037508.3427892,
         ymin:-20037508.3427892,
@@ -789,6 +892,7 @@ max.Layer.AMapLayer.prototype._updateImageList = function (rule) {
 max.Layer.AGSTileLayer = function (serviceUrl) {
     this.serviceUrl = serviceUrl;
     this._imageList = [];
+    this.cors=false;
     this.fullExtent = new max.Extent({
         xmin:-20037508.3427892,
         ymin:-20037508.3427892,
@@ -829,90 +933,47 @@ max.Layer.AGSTileLayer.prototype._updateImageList = function (rule) {
         }
     }
 }
-/**
- * 支持Open Street地图
- */
-max.Layer.OpenStreetLayer = function (serviceUrl) {
-    this.serviceUrl = serviceUrl;
-    this._imageList = [];
-    this.fullExtent = new max.Extent({
-        xmin:-20037508.3427892,
-        ymin:-20037508.3427892,
-        xmax:20037508.3427892,
-        ymax:20037508.3427892
-    });
-    this.originPoint = {
-        x:-20037508.3427892,
-        y:20037508.3427892
-    }
-    this.picWidth = 256;
-    this.picHeight = 256;
-    this.wkid = 102100;
-    this.resolutions = [78271.51696402031, 39135.75848201016, 19567.87924100508, 9783.939620502539, 4891.96981025127, 2445.984905125635, 1222.992452562817, 611.4962262814087, 305.7481131407043, 152.8740565703522, 76.43702828517608, 38.21851414258804, 19.10925707129402, 9.554628535647009];
-    this.init();
-}
-
-max.Layer.OpenStreetLayer.prototype = new max.Layer.TileLayer();
-
-max.Layer.OpenStreetLayer.prototype._updateImageList = function (rule) {
-    this._imageList = [];
-    for (var i = rule.lmin; i <= rule.lmax; ++i) {
-        for (var j = rule.dmin; j <= rule.dmax; ++j) {
-            var url = this.serviceUrl+"/"+rule.z+"/"+i+"/"+j+".jpg";
-            var xmin = i * this.picWidth * rule.resolution + this.originPoint.x;
-            var ymax = this.originPoint.y-j * this.picHeight * rule.resolution;
-            for (var k in this._imageList) {
-                var _image = this._imageList[k];
-                if (_image.url === url) {
-                    break;
-                }
-            }
-            var image = new max.Layer._TitleImage(url, this, i, j, rule.z, xmin, ymax);
-            this._imageList.push(image);
-        }
-    }
-}
-max.Layer.GrapherLayer=function(){
+max.Layer.GraphicsLayer=function(){
     max.Layer.call(this);
-    this.graphers=[];
+    this.graphicses=[];
 
 }
-max.Layer.GrapherLayer.prototype=new max.Layer();
-max.Layer.GrapherLayer.prototype.addGraphic=function(grapher){
-    for(var i in this.graphers){
-        if(this.graphers[i]===grapher){
+max.Layer.GraphicsLayer.prototype=new max.Layer();
+max.Layer.GraphicsLayer.prototype.addGraphic=function(graphics){
+    for(var i in this.graphicses){
+        if(this.graphicses[i]===graphics){
             return false;
         }
     }
-    grapher.parentLayer=this;
-    this.graphers.push(grapher);
+    graphics.parentLayer=this;
+    this.graphicses.push(graphics);
 };
-max.Layer.GrapherLayer.prototype.removeGraphic=function(grapher){
-    for(var i in this.graphers){
-        if(this.graphers[i]===grapher){
-            this.graphers.splice(i,1);
+max.Layer.GraphicsLayer.prototype.removeGraphic=function(graphics){
+    for(var i in this.graphicses){
+        if(this.graphicses[i]===graphics){
+            this.graphicses.splice(i,1);
             return true;
         }
     }
     return false;
 };
-max.Layer.GrapherLayer.prototype.draw=function(){
-    for(var i in this.graphers){
-        this.graphers[i].draw(this.parentMap);
+max.Layer.GraphicsLayer.prototype.draw=function(){
+    for(var i in this.graphicses){
+        this.graphicses[i].draw(this.parentMap);
     }
     this._eventList=[];
 }
 
-max.Layer.GrapherLayer.prototype._mousePointInLayer=function(x,y){
-    var l=this.graphers.length;
+max.Layer.GraphicsLayer.prototype._mousePointInLayer=function(x,y){
+    var l=this.graphicses.length;
     for(var i=l-1;i!=-1;--i){
-        if(this.graphers[i]._mousePointInGrapher(x,y)){
-            return this.graphers[i];
+        if(this.graphicses[i]._mousePointInGraphics(x,y)){
+            return this.graphicses[i];
         }
     }
     return null;
 }
-max.Geometry.Grapher = function (geometry, attribute, symbol) {
+max.Geometry.Graphics = function (geometry, attribute, symbol) {
     this.geometry = geometry;
     this.attribute = attribute || {};
 
@@ -920,7 +981,7 @@ max.Geometry.Grapher = function (geometry, attribute, symbol) {
         if (geometry.geometryType === "POINT") {
             this.symbol = new max.Symbol.SimpleMarkerSymbol({fillStyle:'rgba(30,113,240,0.8)', fillSize:8});
         }else if(geometry.geometryType === "LINE"){
-            this.symbol = new max.Symbol.SimpleLineSymbol({lineStyle:'rgba(30,113,240,0.8)', lineWidth:1});
+            this.symbol = new max.Symbol.SimpleLineSymbol({lineStyle:'rgba(30,113,240,0.8)', lineWidth:4});
         }else if(geometry.geometryType==="POLYGON"){
             this.symbol = new max.Symbol.SimpleFillSymbol({fillStyle:'rgba(30,113,240,0.8)'});
         }
@@ -929,11 +990,11 @@ max.Geometry.Grapher = function (geometry, attribute, symbol) {
     }
     this.parentLayer = null;
 }
-max.Geometry.Grapher.prototype = {
+max.Geometry.Graphics.prototype = {
     draw:function (map) {
         this.geometry.draw(map,this.symbol);
     },
-    _mousePointInGrapher:function (x, y) {
+    _mousePointInGraphics:function (x, y) {
         var map = this.parentLayer.parentMap;
         if (this.geometry.getPath(map,this.symbol)) {
             if(this.geometry.geometryType!=="LINE"){
@@ -1249,5 +1310,216 @@ max.util = {
             re[i] = max.util.clone(obj[i]);
         }
         return re;
+    }
+}
+max.Filter = {
+    /*
+     * 反色
+     */
+    colorInvertProcess:function (idata) {
+
+        var binaryData = idata.data;
+        var l = binaryData.length;
+        for (var i = 0; i < l; i += 4) {
+            var r = binaryData[i];
+            var g = binaryData[i + 1];
+            var b = binaryData[i + 2];
+
+            binaryData[i] = 255 - r;
+            binaryData[i + 1] = 255 - g;
+            binaryData[i + 2] = 255 - b;
+        }
+        return idata;
+    },
+    /**
+     *    灰色
+     * @param idata
+     */
+    grayProcess:function (idata) {
+        var binaryData = idata.data;
+        var l = binaryData.length;
+        for (var i = 0; i < l; i += 4) {
+            var r = binaryData[i];
+            var g = binaryData[i + 1];
+            var b = binaryData[i + 2];
+
+            binaryData[i] = (r * 0.272) + (g * 0.534) + (b * 0.131);
+            binaryData[i + 1] = (r * 0.349) + (g * 0.686) + (b * 0.168);
+            binaryData[i + 2] = (r * 0.393) + (g * 0.769) + (b * 0.189);
+        }
+        return idata;
+    },
+    /**
+     * deep clone image data of canvas
+     *
+     * @param context
+     * @param src
+     * @returns idata
+     */
+    copyImageData:function (context, src) {
+        var dst = context.createImageData(src.width, src.height);
+        dst.data.set(src.data);
+        return dst;
+    },
+    /**
+     * convolution - keneral size 5*5 - blur effect filter(模糊效果)
+     */
+    blurProcess:function (idata) {
+        // console.log("Canvas Filter - blur process");
+        // var tempCanvasData = this.copyImageData(context, canvasData);
+        var data = idata.data;
+        //var data2=[];
+        var sumred = 0.0, sumgreen = 0.0, sumblue = 0.0;
+        for (var x = 0; x < idata.width; x++) {
+            for (var y = 0; y < idata.height; y++) {
+
+                // Index of the pixel in the array
+                var idx = (x + y * idata.width) * 4;
+                for (var subCol = -2; subCol <= 2; subCol++) {
+                    var colOff = subCol + x;
+                    if (colOff < 0 || colOff >= idata.width) {
+                        colOff = 0;
+                    }
+                    for (var subRow = -2; subRow <= 2; subRow++) {
+                        var rowOff = subRow + y;
+                        if (rowOff < 0 || rowOff >= idata.height) {
+                            rowOff = 0;
+                        }
+                        var idx2 = (colOff + rowOff * idata.width) * 4;
+                        var r = data[idx2 + 0];
+                        var g = data[idx2 + 1];
+                        var b = data[idx2 + 2];
+                        sumred += r;
+                        sumgreen += g;
+                        sumblue += b;
+                    }
+                }
+
+                // calculate new RGB value
+                var nr = (sumred / 25.0);
+                var ng = (sumgreen / 25.0);
+                var nb = (sumblue / 25.0);
+
+                // clear previous for next pixel point
+                sumred = 0.0;
+                sumgreen = 0.0;
+                sumblue = 0.0;
+
+                // assign new pixel value
+                data[idx + 0] = nr;
+                // Red channel
+                data[idx + 1] = ng;
+                // Green channel
+                data[idx + 2] = nb;
+                // Blue channel
+                data[idx + 3] = 255;
+                // Alpha channel
+            }
+        }
+        return idata;
+    },
+    /**
+     * after pixel value - before pixel value + 128
+     * 浮雕效果
+     */
+    reliefProcess:function (idata) {
+
+        for (var x = 1; x < idata.width - 1; x++) {
+            for (var y = 1; y < idata.height - 1; y++) {
+
+                // Index of the pixel in the array
+                var idx = (x + y * idata.width) * 4;
+                var bidx = ((x - 1) + y * idata.width) * 4;
+                var aidx = ((x + 1) + y * idata.width) * 4;
+
+                // calculate new RGB value
+                var nr = idata.data[aidx + 0] - idata.data[bidx + 0] + 128;
+                var ng = idata.data[aidx + 1] - idata.data[bidx + 1] + 128;
+                var nb = idata.data[aidx + 2] - idata.data[bidx + 2] + 128;
+                nr = (nr < 0) ? 0 : ((nr > 255) ? 255 : nr);
+                ng = (ng < 0) ? 0 : ((ng > 255) ? 255 : ng);
+                nb = (nb < 0) ? 0 : ((nb > 255) ? 255 : nb);
+
+                // assign new pixel value
+                idata.data[idx + 0] = nr;
+                // Red channel
+                idata.data[idx + 1] = ng;
+                // Green channel
+                idata.data[idx + 2] = nb;
+                // Blue channel
+                idata.data[idx + 3] = 255;
+                // Alpha channel
+            }
+        }
+        return idata;
+    },
+    /**
+     *  before pixel value - after pixel value + 128
+     *  雕刻效果
+     *
+     * @param canvasData
+     */
+    diaokeProcess:function (idata) {
+        for (var x = 1; x < idata.width - 1; x++) {
+            for (var y = 1; y < idata.height - 1; y++) {
+
+                // Index of the pixel in the array
+                var idx = (x + y * idata.width) * 4;
+                var bidx = ((x - 1) + y * idata.width) * 4;
+                var aidx = ((x + 1) + y * idata.width) * 4;
+
+                // calculate new RGB value
+                var nr = idata.data[bidx + 0] - idata.data[aidx + 0] + 128;
+                var ng = idata.data[bidx + 1] - idata.data[aidx + 1] + 128;
+                var nb = idata.data[bidx + 2] - idata.data[aidx + 2] + 128;
+                nr = (nr < 0) ? 0 : ((nr > 255) ? 255 : nr);
+                ng = (ng < 0) ? 0 : ((ng > 255) ? 255 : ng);
+                nb = (nb < 0) ? 0 : ((nb > 255) ? 255 : nb);
+
+                // assign new pixel value
+                idata.data[idx + 0] = nr;
+                // Red channel
+                idata.data[idx + 1] = ng;
+                // Green channel
+                idata.data[idx + 2] = nb;
+                // Blue channel
+                idata.data[idx + 3] = 255;
+                // Alpha channel
+            }
+        }
+        return idata;
+    },
+    /**
+     * mirror reflect
+     *
+     * @param context
+     * @param canvasData
+     */
+    mirrorProcess:function (idata) {
+        var data = [];
+        for (var i in idata.data) {
+            data[i] = idata.data[i];
+        }
+        for (var x = 0; x < idata.width; x++)// column
+        {
+            for (var y = 0; y < idata.height; y++)// row
+            {
+
+                // Index of the pixel in the array
+                var idx = (x + y * idata.width) * 4;
+                var midx = (((idata.width - 1) - x) + y * idata.width) * 4;
+
+                // assign new pixel value
+                idata.data[midx + 0] = data[idx + 0];
+                // Red channel
+                idata.data[midx + 1] = data[idx + 1];
+                // Green channel
+                idata.data[midx + 2] = data[idx + 2];
+                // Blue channel
+                idata.data[midx + 3] = 255;
+                // Alpha channel
+            }
+        }
+        return idata;
     }
 }

@@ -1,6 +1,9 @@
-var map, layer,grapherLayer;
+var map, layer,graphicsLayer;
 
 window.onload = function() {
+    if(window.navigator.userAgent.indexOf("Chrome")<0){
+        alert('暂时只支持chrome，Firefox正在努力修改中');
+    }
 	init();
 }
 var init = function() {
@@ -13,6 +16,9 @@ var init = function() {
     }
     document.getElementById('basemaps').onchange=function(event){
         changeBaseMap(document.getElementById('basemaps').value);
+    }
+    document.getElementById('filter').onchange=function(event){
+        changeBlur(document.getElementById('filter').value)
     }
 }
 var initPosition = function() {
@@ -36,20 +42,20 @@ var initMap = function() {
 	var point = new max.Geometry.Point(115, 35, {
 		wkid : 4326
 	});
-	var grapher = new max.Geometry.Grapher(point);
-	grapher.attribute.id = 1;
+	var graphics = new max.Geometry.Graphics(point);
+	graphics.attribute.id = 1;
 
 	var point2 = new max.Geometry.Point(10438988, 4557548, {
 		wkid : 102100
 	});
-	var grapher2 = new max.Geometry.Grapher(point2, {
+	var graphics2 = new max.Geometry.Graphics(point2, {
 		id : 2
 	});
 
-	grapherLayer = new max.Layer.GrapherLayer();
-	grapherLayer.addGraphic(grapher);
-	grapherLayer.addGraphic(grapher2);
-	map.addLayer(grapherLayer);
+	graphicsLayer = new max.Layer.GraphicsLayer();
+	graphicsLayer.addGraphic(graphics);
+	graphicsLayer.addGraphic(graphics2);
+	map.addLayer(graphicsLayer);
 
 	var line = new max.Geometry.Line([[{
 		x : 117.5,
@@ -70,8 +76,8 @@ var initMap = function() {
 		x : 111,
 		y : 36.4
 	}]]);
-	var lineGrapher = new max.Geometry.Grapher(line,{id:3});
-	grapherLayer.addGraphic(lineGrapher);
+	var lineGraphics = new max.Geometry.Graphics(line,{id:3});
+	graphicsLayer.addGraphic(lineGraphics);
 
 	var polygon = new max.Geometry.Polygon([[{
 		x : 116,
@@ -86,37 +92,37 @@ var initMap = function() {
 		x : 118,
 		y : 48.55
 	}]])
-	var polygonGrapher = new max.Geometry.Grapher(polygon,{id:4});
-	grapherLayer.addGraphic(polygonGrapher);
+	var polygonGraphics = new max.Geometry.Graphics(polygon,{id:4});
+	graphicsLayer.addGraphic(polygonGraphics);
 
 
-	grapherLayer.addEventListener("onclick", function(event) {
-		mconsole("发生了onclick事件：对象为"+"第"+event.grapher.attribute.id+"要素");
+	graphicsLayer.addEventListener("onclick", function(event) {
+		mconsole("发生了onclick事件：对象为"+"第"+event.graphics.attribute.id+"要素");
 	})
-	grapherLayer.addEventListener("onmouseout", function(event) {
-		mconsole("发生了onmouseout事件：对象为"+"第"+event.grapher.attribute.id+"要素");
-		if(event.grapher.geometry.geometryType !== "LINE") {
-			event.grapher.symbol.fillStyle = "rgba(30,113,240,0.8)";
-			event.grapher.symbol.fillSize = "8";
+	graphicsLayer.addEventListener("onmouseout", function(event) {
+		mconsole("发生了onmouseout事件：对象为"+"第"+event.graphics.attribute.id+"要素");
+		if(event.graphics.geometry.geometryType !== "LINE") {
+			event.graphics.symbol.fillStyle = "rgba(30,113,240,0.8)";
+			event.graphics.symbol.fillSize = "8";
 		} else {
-			event.grapher.symbol.lineStyle = "rgba(30,113,240,0.8";
-			event.grapher.symbol.lineWidth = 4;
+			event.graphics.symbol.lineStyle = "rgba(30,113,240,0.8";
+			event.graphics.symbol.lineWidth = 4;
 		}
 	})
-	grapherLayer.addEventListener("onmouseover", function(event) {
-		mconsole("发生了onmouseover事件：对象为"+"第"+event.grapher.attribute.id+"要素");
-		if(event.grapher.geometry.geometryType !== "LINE") {
-			event.grapher.symbol.fillStyle = "rgba(255,12,12,0.6)";
-			event.grapher.symbol.fillSize = "12";
+	graphicsLayer.addEventListener("onmouseover", function(event) {
+		mconsole("发生了onmouseover事件：对象为"+"第"+event.graphics.attribute.id+"要素");
+		if(event.graphics.geometry.geometryType !== "LINE") {
+			event.graphics.symbol.fillStyle = "rgba(255,12,12,0.6)";
+			event.graphics.symbol.fillSize = "12";
 		} else {
-			event.grapher.symbol.lineStyle = "rgba(255,12,12,0.6)";
-			event.grapher.symbol.lineWidth = 8;
-			console.log(event.grapher);
+			event.graphics.symbol.lineStyle = "rgba(255,12,12,0.6)";
+			event.graphics.symbol.lineWidth = 8;
+			console.log(event.graphics);
 		}
 
 	})
-	grapherLayer.addEventListener("onmousemove", function(event) {
-		mconsole("发生了onmousemove事件：对象为"+"第"+event.grapher.attribute.id+"要素");
+	graphicsLayer.addEventListener("onmousemove", function(event) {
+		mconsole("发生了onmousemove事件：对象为"+"第"+event.graphics.attribute.id+"要素");
 	})
 }
 
@@ -126,9 +132,9 @@ var addPointInMap=function(num){
         var x=Math.random()*20037508*2-20037508;
         var y=Math.random()*20037508*2-20037508;
         var p=new max.Geometry.Point(x,y,{wkid:102100});
-        var g=new max.Geometry.Grapher(p);
+        var g=new max.Geometry.Graphics(p);
         g.attribute.id=i+5;
-        grapherLayer.addGraphic(g);
+        graphicsLayer.addGraphic(g);
     }
     var newtime=new Date();
     //console.log(newtime.getTime()-oldtime.getTime());
@@ -148,19 +154,61 @@ var changeBaseMap=function(v){
     switch(v){
         case "Google":
             layer=new max.Layer.GoogleLayer("http://mt2.google.cn/vt/");
+            mconsole("切换到谷歌底图");
             break;
         case "OpenStreet":
             layer=new max.Layer.OpenStreetLayer("http://otile3.mqcdn.com/tiles/1.0.0/osm/");
+            mconsole("切换到OpenStreet底图");
             break;
         case "bingmaps":
             layer=new max.Layer.BingMapsLayer("http://t3.tiles.ditu.live.com/tiles/");
+            mconsole("切换到微软Bing Maps底图");
             break;
         case "amap":
             layer=new max.Layer.AMapLayer("http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8");
+            mconsole("切换到高德底图");
             break;
         case "ago":
             layer=new max.Layer.AGSTileLayer("http://cache1.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/");
+            mconsole("切换到ArcGIS Online底图");
             break;
     }
+    if(layer.cors!==true){
+        document.getElementById('filter').value="";
+    }
     map.addLayer(layer,0);
+}
+
+var changeBlur=function(v){
+    if(layer.cors!==true){
+        document.getElementById('filter').value="";
+        map.filter=null;
+        alert('跨域问题，该底图不能使用滤镜');
+    }
+    switch(v){
+        case "":
+            map.filter=null;
+            mconsole("禁用滤镜效果");
+            break;
+        case "colorInvert":
+            map.filter=max.Filter.colorInvertProcess;
+            mconsole("使用反色滤镜");
+            break;
+        case "gray":
+            map.filter=max.Filter.grayProcess;
+            mconsole("使用灰色滤镜");
+            break;
+        case "blur":
+            map.filter=max.Filter.blurProcess;
+            mconsole("使用模糊滤镜");
+            break;
+    }
+}
+
+var clearConsole=function(){
+    document.getElementById('console').innerHTML="";
+    mconsole("清除控制台完毕");
+}
+var clearFeature=function(){
+    graphicsLayer.graphicses=[];
 }

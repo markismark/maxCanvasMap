@@ -4,6 +4,7 @@
 max.Layer.BingMapsLayer = function (serviceUrl) {
     this.serviceUrl = serviceUrl;
     this._imageList = [];
+    this.cors=false;
     this.fullExtent = new max.Extent({
         xmin:-20037508.3427892,
         ymin:-20037508.3427892,
