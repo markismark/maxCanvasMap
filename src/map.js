@@ -160,7 +160,12 @@ max.Map.prototype = {
     },
     scrollMap:function () {
         var that = this;
+        var isScrolling=false;
         var onmousewheel = function (event) {
+            if(isScrolling===true){
+                return false;
+            }
+            isScrolling=true;
             var pos = max.util.windowToMapClient(that._canvas, event.clientX, event.clientY);
             var point = that.mapClientToMap(pos);
             if (event.wheelDelta > 0) {
@@ -210,6 +215,9 @@ max.Map.prototype = {
             for (var i in that._layers) {
                 that._layers[i].load();
             }
+            setTimeout(function(){
+                isScrolling=false;
+            },150);
 
             //that.draw();
         }
@@ -301,9 +309,10 @@ max.Map.prototype = {
                 targetGraphics=newGragpher;
                 targetLayer=newLayer;
             }
+            that._pub.triggerDirectToSub(that._sub,"onmousemove",event);
 
-        })
-        max.event.addHandler(this._canvas,"mouseout",function(evebt){
+        });
+        max.event.addHandler(this._canvas,"mouseout",function(event){
             if(targetGraphics!==null){
                 event=addEventAttribute(event);
                 event.graphic=targetGraphics;
@@ -311,7 +320,10 @@ max.Map.prototype = {
                 targetGraphics=null;
                 targetLayer=null;
             }
-
+            that._pub.triggerDirectToSub(that._sub,"onmouseout",event);
+        });
+        max.event.addHandler(this._canvas,"mouseon",function(event){
+            that._pub.triggerDirectToSub(that._sub,"onmouseon",event);
         })
     }
 }

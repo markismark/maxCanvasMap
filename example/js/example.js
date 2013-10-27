@@ -38,7 +38,17 @@ var initMap = function() {
 	map = new max.Map("canvas", extent);
 	layer = new max.Layer.GoogleLayer("http://mt2.google.cn/vt/");
 	map.addLayer(layer);
-
+    map.addEventListener("onmousemove",function(event){
+        try{
+            var pos=max.util.windowToMapClient(map._canvas,event.clientX,event.clientY);
+            pos=max.util.mapClientToWebMercator(map,pos.x,pos.y);
+            pos=max.util.webMercatorTOLonLat(pos);
+            document.getElementById('lonlat').innerText="x:"+pos.x.toFixed(4)+",y:"+pos.y.toFixed(4);
+        }catch(e){
+            document.getElementById('lonlat').innerText="";
+            return ;
+        }
+    });
 	var point = new max.Geometry.Point(115, 35, {
 		wkid : 4326
 	});

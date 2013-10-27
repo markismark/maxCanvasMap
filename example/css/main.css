@@ -76,3 +76,15 @@ canvas{
     top:13px;
     right:20px;
 }
+#lonlat{
+    position: absolute;
+    width: 170px;
+    height: 33px;
+    top: 83px;
+    left: 47px;
+    font-family: '微软雅黑';
+    font-size: 16px;
+    border: 1px solid;
+    line-height: 33px;
+    text-align: center;
+}
