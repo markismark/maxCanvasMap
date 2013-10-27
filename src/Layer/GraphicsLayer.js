@@ -1,39 +1,42 @@
 max.Layer.GraphicsLayer=function(){
     max.Layer.call(this);
-    this.graphicses=[];
+    this.graphics=[];
 
 }
 max.Layer.GraphicsLayer.prototype=new max.Layer();
-max.Layer.GraphicsLayer.prototype.addGraphic=function(graphics){
-    for(var i in this.graphicses){
-        if(this.graphicses[i]===graphics){
+max.Layer.GraphicsLayer.prototype.addGraphic=function(graphic){
+    for(var i in this.graphics){
+        if(this.graphics[i]===graphic){
             return false;
         }
     }
-    graphics.parentLayer=this;
-    this.graphicses.push(graphics);
+    graphic.parentLayer=this;
+    this.graphics.push(graphic);
 };
-max.Layer.GraphicsLayer.prototype.removeGraphic=function(graphics){
-   for(var i in this.graphicses){
-       if(this.graphicses[i]===graphics){
-           this.graphicses.splice(i,1);
+max.Layer.GraphicsLayer.prototype.removeGraphic=function(graphic){
+   for(var i in this.graphics){
+       if(this.graphics[i]===graphic){
+           this.graphics.splice(i,1);
            return true;
        }
    }
     return false;
 };
+max.Layer.GraphicsLayer.prototype.removeAllGraphics=function(){
+    this.graphics=[];
+}
 max.Layer.GraphicsLayer.prototype.draw=function(){
-    for(var i in this.graphicses){
-        this.graphicses[i].draw(this.parentMap);
+    for(var i in this.graphics){
+        this.graphics[i].draw(this.parentMap);
     }
     this._eventList=[];
 }
 
 max.Layer.GraphicsLayer.prototype._mousePointInLayer=function(x,y){
-    var l=this.graphicses.length;
+    var l=this.graphics.length;
     for(var i=l-1;i!=-1;--i){
-        if(this.graphicses[i]._mousePointInGraphics(x,y)){
-            return this.graphicses[i];
+        if(this.graphics[i]._mousePointInGraphic(x,y)){
+            return this.graphics[i];
         }
     }
     return null;

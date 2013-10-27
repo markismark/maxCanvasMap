@@ -1,4 +1,4 @@
-var map, layer,graphicsLayer;
+var map, layer,graphicsLayer,drawTool,gindex;
 
 window.onload = function() {
     if(window.navigator.userAgent.indexOf("Chrome")<0){
@@ -42,19 +42,19 @@ var initMap = function() {
 	var point = new max.Geometry.Point(115, 35, {
 		wkid : 4326
 	});
-	var graphics = new max.Geometry.Graphics(point);
-	graphics.attribute.id = 1;
+	var graphic = new max.Geometry.Graphic(point);
+	graphic.attribute.id = 1;
 
 	var point2 = new max.Geometry.Point(10438988, 4557548, {
 		wkid : 102100
 	});
-	var graphics2 = new max.Geometry.Graphics(point2, {
+	var graphic2 = new max.Geometry.Graphic(point2, {
 		id : 2
 	});
 
 	graphicsLayer = new max.Layer.GraphicsLayer();
-	graphicsLayer.addGraphic(graphics);
-	graphicsLayer.addGraphic(graphics2);
+	graphicsLayer.addGraphic(graphic);
+	graphicsLayer.addGraphic(graphic2);
 	map.addLayer(graphicsLayer);
 
 	var line = new max.Geometry.Line([[{
@@ -76,8 +76,8 @@ var initMap = function() {
 		x : 111,
 		y : 36.4
 	}]]);
-	var lineGraphics = new max.Geometry.Graphics(line,{id:3});
-	graphicsLayer.addGraphic(lineGraphics);
+	var lineGraphic = new max.Geometry.Graphic(line,{id:3});
+	graphicsLayer.addGraphic(lineGraphic);
 
 	var polygon = new max.Geometry.Polygon([[{
 		x : 116,
@@ -92,38 +92,41 @@ var initMap = function() {
 		x : 118,
 		y : 48.55
 	}]])
-	var polygonGraphics = new max.Geometry.Graphics(polygon,{id:4});
-	graphicsLayer.addGraphic(polygonGraphics);
+	var polygonGraphic = new max.Geometry.Graphic(polygon,{id:4});
+	graphicsLayer.addGraphic(polygonGraphic);
 
 
 	graphicsLayer.addEventListener("onclick", function(event) {
-		mconsole("发生了onclick事件：对象为"+"第"+event.graphics.attribute.id+"要素");
+		mconsole("发生了onclick事件：对象为"+"第"+event.graphic.attribute.id+"要素");
 	})
 	graphicsLayer.addEventListener("onmouseout", function(event) {
-		mconsole("发生了onmouseout事件：对象为"+"第"+event.graphics.attribute.id+"要素");
-		if(event.graphics.geometry.geometryType !== "LINE") {
-			event.graphics.symbol.fillStyle = "rgba(30,113,240,0.8)";
-			event.graphics.symbol.fillSize = "8";
+		mconsole("发生了onmouseout事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		if(event.graphic.geometry.geometryType !== "LINE") {
+			event.graphic.symbol.fillStyle = "rgba(30,113,240,0.8)";
+			event.graphic.symbol.fillSize = "8";
 		} else {
-			event.graphics.symbol.lineStyle = "rgba(30,113,240,0.8";
-			event.graphics.symbol.lineWidth = 4;
+			event.graphic.symbol.lineStyle = "rgba(30,113,240,0.8";
+			event.graphic.symbol.lineWidth = 4;
 		}
 	})
 	graphicsLayer.addEventListener("onmouseover", function(event) {
-		mconsole("发生了onmouseover事件：对象为"+"第"+event.graphics.attribute.id+"要素");
-		if(event.graphics.geometry.geometryType !== "LINE") {
-			event.graphics.symbol.fillStyle = "rgba(255,12,12,0.6)";
-			event.graphics.symbol.fillSize = "12";
+		mconsole("发生了onmouseover事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		if(event.graphic.geometry.geometryType !== "LINE") {
+			event.graphic.symbol.fillStyle = "rgba(255,12,12,0.6)";
+			event.graphic.symbol.fillSize = "12";
 		} else {
-			event.graphics.symbol.lineStyle = "rgba(255,12,12,0.6)";
-			event.graphics.symbol.lineWidth = 8;
-			console.log(event.graphics);
+			event.graphic.symbol.lineStyle = "rgba(255,12,12,0.6)";
+			event.graphic.symbol.lineWidth = 8;
+			console.log(event.graphic);
 		}
 
 	})
 	graphicsLayer.addEventListener("onmousemove", function(event) {
-		mconsole("发生了onmousemove事件：对象为"+"第"+event.graphics.attribute.id+"要素");
-	})
+		mconsole("发生了onmousemove事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+	});
+
+    gindex=5;
+    initDrawTool();
 }
 
 var addPointInMap=function(num){
@@ -132,8 +135,9 @@ var addPointInMap=function(num){
         var x=Math.random()*20037508*2-20037508;
         var y=Math.random()*20037508*2-20037508;
         var p=new max.Geometry.Point(x,y,{wkid:102100});
-        var g=new max.Geometry.Graphics(p);
-        g.attribute.id=i+5;
+        var g=new max.Geometry.Graphic(p);
+        g.attribute.id=gindex;
+        ++gindex;
         graphicsLayer.addGraphic(g);
     }
     var newtime=new Date();
@@ -210,5 +214,51 @@ var clearConsole=function(){
     mconsole("清除控制台完毕");
 }
 var clearFeature=function(){
-    graphicsLayer.graphicses=[];
+    graphicsLayer.removeAllGraphics();
+    mconsole("清除所有要素");
+}
+
+var initDrawTool=function(){
+    drawTool=new max.tools.DrawTool(map);
+    drawTool.addEventListener("drawstart",function(event){
+        console.log(event);
+    })
+    drawTool.addEventListener("drawend",function(event){
+        var geometry=event.geometry;
+        var graphics=new max.Geometry.Graphic(geometry,{id:gindex});
+        ++gindex;
+        graphicsLayer.addGraphic(graphics);
+    })
+}
+
+var drawPoint=function(){
+    document.getElementById('drawPoint').setAttribute("disabled","disabled");
+    document.getElementById('drawLine').removeAttribute("disabled");
+    document.getElementById('drawPolygon').removeAttribute("disabled");
+    document.getElementById('drawend').removeAttribute("disabled");
+    drawTool.activate();
+    drawTool.setDrawType("POINT");
+}
+var drawLine=function(){
+    document.getElementById('drawPoint').removeAttribute("disabled");
+    document.getElementById('drawLine').setAttribute("disabled","disabled");
+    document.getElementById('drawPolygon').removeAttribute("disabled");
+    document.getElementById('drawend').removeAttribute("disabled");
+    drawTool.activate();
+    drawTool.setDrawType("LINE");
+}
+var drawPolygon=function(){
+    document.getElementById('drawPoint').removeAttribute("disabled");
+    document.getElementById('drawLine').removeAttribute("disabled");
+    document.getElementById('drawPolygon').setAttribute("disabled","disabled");
+    document.getElementById('drawend').removeAttribute("disabled");
+    drawTool.activate();
+    drawTool.setDrawType("POLYGON");
+}
+var drawend=function(){
+    document.getElementById('drawPoint').removeAttribute("disabled");
+    document.getElementById('drawLine').removeAttribute("disabled");
+    document.getElementById('drawPolygon').removeAttribute("disabled");
+    document.getElementById('drawend').setAttribute("disabled","disabled");
+    drawTool.deactivate();
 }

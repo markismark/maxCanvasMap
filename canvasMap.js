@@ -1000,7 +1000,13 @@ max.Geometry.Graphics.prototype = {
             if(this.geometry.geometryType!=="LINE"){
                 return this.parentLayer.parentMap._context.isPointInPath(x, y);
             }else{
-                return this.parentLayer.parentMap._context.isPointInStroke(x, y);
+                this.parentLayer.parentMap._context.save();
+                this.parentLayer.parentMap._context.lineWidth=this.symbol.lineWidth;
+                this.parentLayer.parentMap._context.lineCap="round";
+                this.parentLayer.parentMap._context.lineJoin="round";
+                var b=this.parentLayer.parentMap._context.isPointInStroke(x, y);
+                this.parentLayer.parentMap._context.restore();
+                return b;
             }
 
         } else {

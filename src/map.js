@@ -245,14 +245,14 @@ max.Map.prototype = {
                     return false;
                 }
                 event=addEventAttribute(event);
-                event.graphics=targetGraphics;
+                event.graphic=targetGraphics;
                 that._pub.triggerDirectToSub(targetLayer._sub,"on"+type,event);
             });
         }
         addEvent("click");
         addEvent("mouseup");
         addEvent("mousedown");
-        addEvent("dbclick");
+        addEvent("dblclick");
         addEvent("keydown");
         addEvent("keypress");
         addEvent("keyup");
@@ -276,7 +276,7 @@ max.Map.prototype = {
             if(!b){
                 if(targetGraphics!==null){
                     event=addEventAttribute(event);
-                    event.graphics=targetGraphics;
+                    event.graphic=targetGraphics;
                     that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
                 }
                 targetGraphics=null;
@@ -284,18 +284,18 @@ max.Map.prototype = {
             }else{
                 if(targetGraphics===null){
                     event=addEventAttribute(event);
-                    event.graphics=newGragpher;
+                    event.graphic=newGragpher;
                     that._pub.triggerDirectToSub(newLayer._sub,"onmouseover",event);
                 } else if(newGragpher===targetGraphics){
                     event=addEventAttribute(event);
-                    event.graphics=targetGraphics;
+                    event.graphic=targetGraphics;
                     that._pub.triggerDirectToSub(targetLayer._sub,"onmousemove",event);
                 }else{
                     event=addEventAttribute(event);
-                    event.graphics=targetGraphics;
+                    event.graphic=targetGraphics;
                     that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
 
-                    event.graphics=newGragpher;
+                    event.graphic=newGragpher;
                     that._pub.triggerDirectToSub(newLayer._sub,"onmouseover",event);
                 }
                 targetGraphics=newGragpher;
@@ -306,7 +306,7 @@ max.Map.prototype = {
         max.event.addHandler(this._canvas,"mouseout",function(evebt){
             if(targetGraphics!==null){
                 event=addEventAttribute(event);
-                event.graphics=targetGraphics;
+                event.graphic=targetGraphics;
                 that._pub.triggerDirectToSub(targetLayer._sub,"onmouseout",event);
                 targetGraphics=null;
                 targetLayer=null;
@@ -324,3 +324,4 @@ max.Extent = function (extent) {
 }
 
 max.Geometry={};
+max.tools={};

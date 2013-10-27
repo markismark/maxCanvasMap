@@ -7,6 +7,8 @@
 丰富symbol类，以及infowindow。
 ##滤镜
 可以添加滤镜效果，只不过有的滤镜运行一次世间较长，浏览器就卡住不到了。另外涉及到跨域问题，瓦片服务器一定要支持跨域，目前我看见的也只有Google和OpenStreet支持。
+##投影
+目前仅支持WGS84和Web Mercator两种投影，不过也是WEBGIS中最常用的两种投影，其他的投影使用较少，我一个人搞不了那么多。
 ##使用代码
 	var extent = new max.Extent({
 		xmin : 10762435.858420863,

@@ -40,6 +40,12 @@ max.util = {
             y:y1
         }
     },
+    mapClientToWebMercator:function(map,x,y){
+        return {
+            x:map.resolution*x+map.originPoint.x,
+            y:map.originPoint.y-map.resolution*y
+        }
+    },
     clone:function(obj){
         if( typeof (obj) != 'object' || obj==null)
         {return obj;}

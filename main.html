@@ -45,7 +45,7 @@
 			</div>
             <div class="wc_wrapper">
                 <div class="c1">
-                    添加点要素：
+                    随机添加点要素：
                 </div>
                 <div>
                     <select id="pointNum">
@@ -55,6 +55,17 @@
                         <option value="5000">5000个</option>
                         <option value="10000">10000个</option>
                     </select>
+                </div>
+            </div>
+            <div class="wc_wrapper">
+                <div class="c1">
+                    手动添加要素：
+                </div>
+                <div>
+                    <button id="drawPoint" onclick="drawPoint()">点</button>
+                    <button id="drawLine" onclick="drawLine()">线</button>
+                    <button id="drawPolygon" onclick="drawPolygon()">面</button>
+                    <button id="drawend" disabled="disabled" onclick="drawend()">结束</button>
                 </div>
             </div>
             <div class="wc_wrapper">
@@ -89,11 +100,12 @@
         <script type="text/javascript" src="src/Layer/AMapLayer.js"></script>
         <script type="text/javascript" src="src/Layer/AGSTileLayer.js"></script>
 		<script type="text/javascript" src="src/Layer/GraphicsLayer.js"></script>
-		<script type="text/javascript" src="src/Geometry/Graphics.js"></script>
+		<script type="text/javascript" src="src/Geometry/Graphic.js"></script>
 		<script type="text/javascript" src="src/Geometry/Geometry.js"></script>
 		<script type="text/javascript" src="src/Symbol/symbol.js"></script>
 		<script type="text/javascript" src="src/util.js"></script>
         <script type="text/javascript" src="src/Filter.js"></script>
+        <script type="text/javascript" src="src/tools/DrawTool.js"></script>
         <!--<script type="text/javascript" src="canvasMap-min.js"></script>-->
 		<script type="text/javascript" src="example/js/example.js"></script>
 	</body>

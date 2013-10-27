@@ -1,4 +1,4 @@
-max.Geometry.Graphics = function (geometry, attribute, symbol) {
+max.Geometry.Graphic = function (geometry, attribute, symbol) {
     this.geometry = geometry;
     this.attribute = attribute || {};
 
@@ -15,11 +15,11 @@ max.Geometry.Graphics = function (geometry, attribute, symbol) {
     }
     this.parentLayer = null;
 }
-max.Geometry.Graphics.prototype = {
+max.Geometry.Graphic.prototype = {
     draw:function (map) {
         this.geometry.draw(map,this.symbol);
     },
-    _mousePointInGraphics:function (x, y) {
+    _mousePointInGraphic:function (x, y) {
         var map = this.parentLayer.parentMap;
         if (this.geometry.getPath(map,this.symbol)) {
             if(this.geometry.geometryType!=="LINE"){
