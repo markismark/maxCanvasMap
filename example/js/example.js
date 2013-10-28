@@ -186,6 +186,10 @@ var changeBaseMap=function(v){
             layer=new max.Layer.AGSTileLayer("http://cache1.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/");
             mconsole("切换到ArcGIS Online底图");
             break;
+        case "baidu":
+            layer=new max.Layer.BaiduLayer("http://shangetu2.map.bdimg.com/it/");
+            mconsole("切换到百度底图");
+            break;
     }
     if(layer.cors!==true){
         document.getElementById('filter').value="";

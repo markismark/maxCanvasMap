@@ -126,8 +126,10 @@ max.Map.prototype = {
         var onmousedown=function(event){
             pos = max.util.windowToMapClient(that._canvas, event.clientX, event.clientY);
             draging = true;
+            solving=false;
             var onmousemove = function (event) {
-                if (draging) {
+                if (draging&&!solving) {
+                    solving=true;
                     var pos1 = max.util.windowToMapClient(that._canvas, event.clientX, event.clientY);
                     var x = pos1.x - pos.x;
                     var y = pos1.y - pos.y;
@@ -144,6 +146,7 @@ max.Map.prototype = {
                         var layer = that._layers[i];
                         layer.ondrag();
                     }
+                    solving=false;
                 }
             }
             var onmouseup = function (event) {
@@ -166,6 +169,9 @@ max.Map.prototype = {
                 return false;
             }
             isScrolling=true;
+            setTimeout(function(){
+                isScrolling=false;
+            },150);
             var pos = max.util.windowToMapClient(that._canvas, event.clientX, event.clientY);
             var point = that.mapClientToMap(pos);
             if (event.wheelDelta > 0) {
@@ -215,9 +221,7 @@ max.Map.prototype = {
             for (var i in that._layers) {
                 that._layers[i].load();
             }
-            setTimeout(function(){
-                isScrolling=false;
-            },150);
+
 
             //that.draw();
         }
