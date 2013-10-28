@@ -31,7 +31,7 @@
 	var point2 = new max.Geometry.Point(10438988, 4557548, {
 		wkid : 102100
 	});
-	var graphics2 = new max.Geometry.Graphics(point2, {
+	var graphics2 = new max.Geometry.Graphic(point2, {
 		id : 2
 	});
 
@@ -59,8 +59,8 @@
 		x : 111,
 		y : 36.4
 	}]]);
-	var lineGraphics = new max.Geometry.Graphics(line,{id:3});
-	graphicsLayer.addGraphic(lineGraphics);
+	var lineGraphic = new max.Geometry.Graphic(line,{id:3});
+	graphicsLayer.addGraphic(lineGraphic);
 
 	var polygon = new max.Geometry.Polygon([[{
 		x : 116,
@@ -75,37 +75,37 @@
 		x : 118,
 		y : 48.55
 	}]])
-	var polygonGraphics = new max.Geometry.Graphics(polygon,{id:4});
-	graphicsLayer.addGraphic(polygonGraphics);
+	var polygonGraphic = new max.Geometry.Graphic(polygon,{id:4});
+	graphicsLayer.addGraphic(polygonGraphic);
 
 
 	graphicsLayer.addEventListener("onclick", function(event) {
-		mconsole("发生了onclick事件：对象为"+"第"+event.graphics.attribute.id+"要素");
+		mconsole("发生了onclick事件：对象为"+"第"+event.graphic.attribute.id+"要素");
 	})
 	graphicsLayer.addEventListener("onmouseout", function(event) {
-		mconsole("发生了onmouseout事件：对象为"+"第"+event.graphics.attribute.id+"要素");
-		if(event.graphics.geometry.geometryType !== "LINE") {
-			event.graphics.symbol.fillStyle = "rgba(30,113,240,0.8)";
-			event.graphics.symbol.fillSize = "8";
+		mconsole("发生了onmouseout事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		if(event.graphic.geometry.geometryType !== "LINE") {
+			event.graphic.symbol.fillStyle = "rgba(30,113,240,0.8)";
+			event.graphic.symbol.fillSize = "8";
 		} else {
-			event.graphics.symbol.lineStyle = "rgba(30,113,240,0.8";
-			event.graphics.symbol.lineWidth = 4;
+			event.graphic.symbol.lineStyle = "rgba(30,113,240,0.8";
+			event.graphic.symbol.lineWidth = 4;
 		}
 	})
 	graphicsLayer.addEventListener("onmouseover", function(event) {
-		mconsole("发生了onmouseover事件：对象为"+"第"+event.graphics.attribute.id+"要素");
-		if(event.graphics.geometry.geometryType !== "LINE") {
-			event.graphics.symbol.fillStyle = "rgba(255,12,12,0.6)";
-			event.graphics.symbol.fillSize = "12";
+		mconsole("发生了onmouseover事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		if(event.graphic.geometry.geometryType !== "LINE") {
+			event.graphic.symbol.fillStyle = "rgba(255,12,12,0.6)";
+			event.graphic.symbol.fillSize = "12";
 		} else {
-			event.graphics.symbol.lineStyle = "rgba(255,12,12,0.6)";
-			event.graphics.symbol.lineWidth = 8;
-			console.log(event.graphics);
+			event.graphic.symbol.lineStyle = "rgba(255,12,12,0.6)";
+			event.graphic.symbol.lineWidth = 8;
+			console.log(event.graphic);
 		}
 
 	})
 	graphicsLayer.addEventListener("onmousemove", function(event) {
-		mconsole("发生了onmousemove事件：对象为"+"第"+event.graphics.attribute.id+"要素");
+		mconsole("发生了onmousemove事件：对象为"+"第"+event.graphic.attribute.id+"要素");
 	})
 ##测试
 动态加载1000个点，仅需要79毫秒，加载3000个点，需要500毫秒，10000个点，需要6秒。但是所有的点一旦加载上了，拖动没有任何的卡感。
