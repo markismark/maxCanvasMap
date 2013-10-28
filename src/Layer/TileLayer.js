@@ -45,10 +45,10 @@ max.Layer.TileLayer.prototype.updateScale=function(map){
     }
     this.resolution = resolution;
     this.z = z;
-    var lmin = Math.floor((extent.xmin - this.originPoint.x) / this.picWidth / this.resolution);
-    var lmax = Math.ceil((extent.xmax - this.originPoint.x) / this.picWidth / this.resolution) - 1;
-    var dmax = Math.floor(( this.originPoint.y-extent.ymin) / this.picHeight / this.resolution);
-    var dmin = Math.ceil(( this.originPoint.y-extent.ymax) / this.picHeight / this.resolution) - 1;
+    var lmin = Math.floor((Math.max(extent.xmin,this.fullExtent.xmin) - this.originPoint.x) / this.picWidth / this.resolution);
+    var lmax = Math.ceil((Math.min(extent.xmax,this.fullExtent.xmax) - this.originPoint.x) / this.picWidth / this.resolution) - 1;
+    var dmax = Math.floor(( this.originPoint.y-Math.max(extent.ymin,this.fullExtent.ymin)) / this.picHeight / this.resolution)-1;
+    var dmin = Math.ceil(( this.originPoint.y-Math.min(extent.ymax,this.fullExtent.ymax)) / this.picHeight / this.resolution) ;
     this._imageRectangle = {
         lmin:lmin,
         lmax:lmax,
