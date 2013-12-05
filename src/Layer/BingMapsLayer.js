@@ -45,6 +45,7 @@ max.Layer.BingMapsLayer.prototype._updateImageList = function (rule) {
                 r+=_jf[k]+_if[k];
             }
             r=parseInt(r,2).toString(4);
+			r=_f(r,z);
             var url=this.serviceUrl+"r"+r+"?g=103&mkt=zh-cn&n=z";
 
             var xmin = i * this.picWidth * rule.resolution + this.originPoint.x;

@@ -182,10 +182,7 @@ max.Filter = {
      * @param canvasData
      */
     mirrorProcess:function (idata) {
-        var data = [];
-        for (var i in idata.data) {
-            data[i] = idata.data[i];
-        }
+        var data = idata.splice(0);
         for (var x = 0; x < idata.width; x++)// column
         {
             for (var y = 0; y < idata.height; y++)// row

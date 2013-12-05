@@ -15,8 +15,8 @@ max.Map = function (id, extent) {
     this._context = this._canvas.getContext('2d');
     this._layers = [];
     this.extent = extent;
-    this.width = canvas.width;
-    this.height = canvas.height;
+    this.width = this._canvas.width;
+    this.height = this._canvas.height;
     this.resolutions = [156543.0339280406, 78271.51696402031, 39135.75848201016, 19567.87924100508, 9783.939620502539, 4891.96981025127, 2445.984905125635, 1222.992452562817, 611.4962262814087, 305.7481131407043, 152.8740565703522, 76.43702828517608, 38.21851414258804, 19.10925707129402, 9.554628535647009];
     this.init();
     this.wkid = 102100;
@@ -47,7 +47,7 @@ max.Map.prototype = {
         //this._mousechange();
         var x = function () {
             that.draw.call(that);
-            requestAnimFrame(x)
+            requestAnimFrame(x);
         }
         x();
     },
@@ -126,9 +126,8 @@ max.Map.prototype = {
         var onmousedown=function(event){
             pos = max.util.windowToMapClient(that._canvas, event.clientX, event.clientY);
             draging = true;
-            solving=false;
             var onmousemove = function (event) {
-                if (draging&&!solving) {
+                if (draging) {
                     solving=true;
                     var pos1 = max.util.windowToMapClient(that._canvas, event.clientX, event.clientY);
                     var x = pos1.x - pos.x;
