@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="60c45c42-266d-4bbc-81af-77a2ea66f2a5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Layer/AGSTileLayer.js" afterPath="$PROJECT_DIR$/src/Layer/AGSTileLayer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Layer/AMapLayer.js" afterPath="$PROJECT_DIR$/src/Layer/AMapLayer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Layer/BaiduLayer.js" afterPath="$PROJECT_DIR$/src/Layer/BaiduLayer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Layer/BingMapsLayer.js" afterPath="$PROJECT_DIR$/src/Layer/BingMapsLayer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Layer/GoogleLayer.js" afterPath="$PROJECT_DIR$/src/Layer/GoogleLayer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Layer/OpenStreetLayer.js" afterPath="$PROJECT_DIR$/src/Layer/OpenStreetLayer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Layer/TileLayer.js" afterPath="$PROJECT_DIR$/src/Layer/TileLayer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/map.js" afterPath="$PROJECT_DIR$/src/map.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Symbol/symbol.js" afterPath="$PROJECT_DIR$/src/Symbol/symbol.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
     </list>
     <ignored path="maxCanvasMap.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,10 +25,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="map.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="map.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/map.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="342" column="14" selection-start="12886" selection-end="12886" vertical-scroll-proportion="0.23580787" vertical-offset="8334" max-vertical-offset="9925">
+            <state line="342" column="14" selection-start="12886" selection-end="12886" vertical-scroll-proportion="0.0" vertical-offset="8334" max-vertical-offset="9925">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="readme.md" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/readme.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="32" selection-start="626" selection-end="626" vertical-scroll-proportion="0.49126637" vertical-offset="0" max-vertical-offset="3100">
               <folding />
             </state>
           </provider>
@@ -69,6 +70,7 @@
         <option value="$PROJECT_DIR$/src/Layer/AMapLayer.js" />
         <option value="$PROJECT_DIR$/src/Layer/OpenStreetLayer.js" />
         <option value="$PROJECT_DIR$/src/map.js" />
+        <option value="$PROJECT_DIR$/readme.md" />
       </list>
     </option>
   </component>
@@ -353,7 +355,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/map.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="342" column="14" selection-start="12886" selection-end="12886" vertical-scroll-proportion="0.23580787" vertical-offset="8334" max-vertical-offset="9925">
+        <state line="342" column="14" selection-start="12886" selection-end="12886" vertical-scroll-proportion="0.0" vertical-offset="8334" max-vertical-offset="9925">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="32" selection-start="626" selection-end="626" vertical-scroll-proportion="0.49126637" vertical-offset="0" max-vertical-offset="3100">
           <folding />
         </state>
       </provider>
