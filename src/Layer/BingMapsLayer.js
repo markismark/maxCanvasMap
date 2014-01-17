@@ -60,4 +60,5 @@ max.Layer.BingMapsLayer.prototype._updateImageList = function (rule) {
             this._imageList.push(image);
         }
     }
+    return this._imageList;
 }

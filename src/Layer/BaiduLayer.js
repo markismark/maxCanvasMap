@@ -41,4 +41,5 @@ max.Layer.BaiduLayer.prototype._updateImageList = function (rule) {
             this._imageList.push(image);
         }
     }
+    return this._imageList;
 }

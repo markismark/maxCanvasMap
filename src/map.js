@@ -8,7 +8,6 @@ window.requestAnimFrame = (function(){
             window.setTimeout(callback, 1000/60);
         };
 })();
-
 var max = {};
 max.Map = function (id, extent) {
     this._canvas = document.getElementById(id);
@@ -267,7 +266,6 @@ max.Map.prototype = {
         addEvent("keydown");
         addEvent("keypress");
         addEvent("keyup");
-
         max.event.addHandler(this._canvas,"mousemove",function(event){
             var newGragpher=null;//这一刻event变化是新的，target是旧的
             var newLayer=null;
@@ -327,7 +325,7 @@ max.Map.prototype = {
         });
         max.event.addHandler(this._canvas,"mouseon",function(event){
             that._pub.triggerDirectToSub(that._sub,"onmouseon",event);
-        })
+        });
     }
 }
 
@@ -340,3 +338,55 @@ max.Extent = function (extent) {
 
 max.Geometry={};
 max.tools={};
+
+max._imgDownloadManager=function(){
+    var size=5;
+    var downloading=[];
+    var toBeDownload=[];
+    var _dsize=0;
+    var _total=0;
+    var download=function(timg){
+        if(timg){
+            for(var i in downloading){
+                if(downloading[i]==timg){
+                    downloading.splice(i,1);
+                }
+            }
+        }
+        if(downloading.length==size){
+            return ;
+        }else{
+            while(downloading.length<=size&&toBeDownload.length>0){
+                ++_dsize;
+                var timg=toBeDownload.pop();
+                (function(timg){
+                    var _timg=timg;
+                    _timg.image.onload=function(){
+                        download(_timg);
+                        _timg.imageOnLoad.call(_timg);
+                    }
+                    downloading.push(_timg);
+                    _timg.image.src=_timg.src;
+                })(timg);
+            }
+        }
+    };
+    max._imgDownloadManager.prototype.addImg=function(timg){
+        toBeDownload.push(timg);
+        download();
+    };
+    max._imgDownloadManager.prototype.removeImg=function(timg){
+        for(var i in toBeDownload){
+            if(toBeDownload[i]==timg){
+                toBeDownload.splice(i,1);
+            }
+        }
+    };
+    max._imgDownloadManager.prototype.refrshImg=function(timgs){
+        console.log("total:"+_total+",downloading:"+_dsize);
+        toBeDownload=timgs.slice(0);
+        _total=toBeDownload.length;
+        _dsize=0;
+        download();
+    }
+}

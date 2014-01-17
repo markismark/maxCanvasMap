@@ -7,6 +7,7 @@ max.Layer.TileLayer = function (serviceUrl) {
     this._imageList = [];
     this.scaleRate = 1;
     this.cors=false;//是否支持跨域
+    this._dlm=new max._imgDownloadManager();
 }
 max.Layer.TileLayer.prototype=new max.Layer();
 max.Layer.TileLayer.prototype.init=function(){
@@ -47,8 +48,8 @@ max.Layer.TileLayer.prototype.updateScale=function(map){
     this.z = z;
     var lmin = Math.floor((Math.max(extent.xmin,this.fullExtent.xmin) - this.originPoint.x) / this.picWidth / this.resolution);
     var lmax = Math.ceil((Math.min(extent.xmax,this.fullExtent.xmax) - this.originPoint.x) / this.picWidth / this.resolution) - 1;
-    var dmax = Math.floor(( this.originPoint.y-Math.max(extent.ymin,this.fullExtent.ymin)) / this.picHeight / this.resolution)-1;
-    var dmin = Math.ceil(( this.originPoint.y-Math.min(extent.ymax,this.fullExtent.ymax)) / this.picHeight / this.resolution) ;
+    var dmax = Math.ceil(( this.originPoint.y-Math.max(extent.ymin,this.fullExtent.ymin)) / this.picHeight / this.resolution)-1;
+    var dmin = Math.floor(( this.originPoint.y-Math.min(extent.ymax,this.fullExtent.ymax)) / this.picHeight / this.resolution) ;
     this._imageRectangle = {
         lmin:lmin,
         lmax:lmax,
@@ -64,7 +65,8 @@ max.Layer.TileLayer.prototype.load=function(){
     }else{
         return false;
     }
-    this._updateImageList(o);
+    var list=this._updateImageList(o);
+    this._dlm.refrshImg(list);
 }
 max.Layer.TileLayer.prototype.draw=function(){
     if(this.parentMap){
@@ -117,7 +119,8 @@ max.Layer.TileLayer.prototype.ondrag=function(){
 
         }
         var o = this._calImage(this.parentMap);
-        this._updateImageList(o);
+        var list=this._updateImageList(o);
+        this._dlm.refrshImg(list);
     }
 
 }
@@ -129,10 +132,11 @@ max.Layer._TitleImage = function (url, layer, x, y, z, xmin, ymax,cors) {
         this.image.crossOrigin="Anonymous";
     }
     var that = this;
-    this.image.onload = function () {
-        that.imageOnLoad(that);
-    };
-    this.image.src = url;
+//    this.image.onload = function (event) {
+//        that.imageOnLoad(that);
+//    };
+    this.src=url;
+    //this.image.src = url;
     this.layer = layer;
     this.px = x;
     this.py = y;
@@ -145,9 +149,9 @@ max.Layer._TitleImage = function (url, layer, x, y, z, xmin, ymax,cors) {
 
 }
 max.Layer._TitleImage.prototype = {
-    imageOnLoad:function (that) {
-        that.isonload = true;
-        that.update.call(that);
+    imageOnLoad:function () {
+        this.isonload = true;
+        this.update.call(this);
     },
     update:function () {
         if(this.layer.parentMap){
@@ -158,6 +162,5 @@ max.Layer._TitleImage.prototype = {
             this.x = x;
             this.y = y;
         }
-
     }
 }
