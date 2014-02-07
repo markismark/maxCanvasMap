@@ -126,8 +126,35 @@ max.Geometry.Point.prototype.draw=function(map,symbol){
     if(symbol.SymbolType=="SimpleMarkerSymbol"){
         context.beginPath();
         context.fillStyle=symbol.fillStyle;
+        context.lineWidth=symbol.lineWidth;
         if(symbol.style=="CIRCLE"){
-            context.arc(x,y,symbol.fillSize,0,Math.PI*2,true);
+            context.arc(x,y,symbol.fillSize/2,0,Math.PI*2,true);
+        }else if(symbol.style=="SQUARE"){
+            context.moveTo(x-symbol.fillSize/2,y-symbol.fillSize/2);
+            context.lineTo(x+symbol.fillSize/2,y-symbol.fillSize/2);
+            context.lineTo(x+symbol.fillSize/2,y+symbol.fillSize/2);
+            context.lineTo(x-symbol.fillSize/2,y+symbol.fillSize/2);
+            context.closePath();
+        }else if(symbol.style=="DIAMOND"){
+            context.moveTo(x,y+symbol.fillSize/2);
+            context.lineTo(x-symbol.fillSize/2,y);
+            context.lineTo(x,y-symbol.fillSize/2);
+            context.lineTo(x+symbol.fillSize/2,y);
+            context.closePath();
+        }else if(symbol.style=="CROSS"){
+            context.strokeStyle=symbol.fillStyle;
+            context.moveTo(x,y+symbol.fillSize/2);
+            context.lineTo(x,y-symbol.fillSize/2);
+            context.closePath();
+            context.moveTo(x-symbol.fillSize/2,y);
+            context.lineTo(x+symbol.fillSize/2,y);
+            context.closePath();
+            context.stroke();
+        }else if(symbol.style=="TRIANGLE"){
+            context.moveTo(x,y-0.577*symbol.fillSize);
+            context.lineTo(x+symbol.fillSize/2,y+0.288*symbol.fillSize);
+            context.lineTo(x-symbol.fillSize/2,y+0.288*symbol.fillSize);
+            context.closePath();
         }
         context.fill();
     }else{
