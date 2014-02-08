@@ -114,7 +114,7 @@ max.Geometry.Point=function(x,y,option){
     this._getWebMercatorPoint();
 }
 max.Geometry.Point.prototype=new max.Geometry.Geometry();
-max.Geometry.Point.prototype.draw=function(map,symbol){
+max.Geometry.Point.prototype.draw=function(map,symbol,attributes){
     var p=max.util.webMercatorToMapClient(map,this.webMercatorPoint.x,this.webMercatorPoint.y);
     var x= p.x;
     var y= p.y;
@@ -123,10 +123,9 @@ max.Geometry.Point.prototype.draw=function(map,symbol){
         return false;
     }
     context.save();
+    symbol.setContext(context);
     if(symbol.SymbolType=="SimpleMarkerSymbol"){
         context.beginPath();
-        context.fillStyle=symbol.fillStyle;
-        context.lineWidth=symbol.lineWidth;
         if(symbol.style=="CIRCLE"){
             context.arc(x,y,symbol.fillSize/2,0,Math.PI*2,true);
         }else if(symbol.style=="SQUARE"){
@@ -157,12 +156,17 @@ max.Geometry.Point.prototype.draw=function(map,symbol){
             context.closePath();
         }
         context.fill();
-    }else{
-
+    }else if(symbol.SymbolType==="TextSymbol"){
+        var text="";
+        if(typeof symbol.text==="function"){
+            text=symbol.text(attributes);
+        }else{
+            text=symbol.text;
+        }
+        context.translate(symbol.textOffsetX,symbol.textOffsetY);
+        context.fillText(text,x,y);
     }
     context.restore();
-
-
 }
 max.Geometry.Point.prototype.getPath=function(map,symbol){
     var x=(this.webMercatorPoint.x-map.originPoint.x)/map.resolution;

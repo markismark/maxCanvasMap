@@ -26,7 +26,7 @@
 		wkid : 4326
 	});
 	var graphics = new max.Geometry.Graphics(point);
-	graphics.attribute.id = 1;
+	graphics.attributes.id = 1;
 
 	var point2 = new max.Geometry.Point(10438988, 4557548, {
 		wkid : 102100
@@ -80,10 +80,10 @@
 
 
 	graphicsLayer.addEventListener("onclick", function(event) {
-		mconsole("发生了onclick事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		mconsole("发生了onclick事件：对象为"+"第"+event.graphic.attributes.id+"要素");
 	})
 	graphicsLayer.addEventListener("onmouseout", function(event) {
-		mconsole("发生了onmouseout事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		mconsole("发生了onmouseout事件：对象为"+"第"+event.graphic.attributes.id+"要素");
 		if(event.graphic.geometry.geometryType !== "LINE") {
 			event.graphic.symbol.fillStyle = "rgba(30,113,240,0.8)";
 			event.graphic.symbol.fillSize = "8";
@@ -93,7 +93,7 @@
 		}
 	})
 	graphicsLayer.addEventListener("onmouseover", function(event) {
-		mconsole("发生了onmouseover事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		mconsole("发生了onmouseover事件：对象为"+"第"+event.graphic.attributes.id+"要素");
 		if(event.graphic.geometry.geometryType !== "LINE") {
 			event.graphic.symbol.fillStyle = "rgba(255,12,12,0.6)";
 			event.graphic.symbol.fillSize = "12";
@@ -105,7 +105,7 @@
 
 	})
 	graphicsLayer.addEventListener("onmousemove", function(event) {
-		mconsole("发生了onmousemove事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		mconsole("发生了onmousemove事件：对象为"+"第"+event.graphic.attributes.id+"要素");
 	})
 ##测试
 动态加载1000个点，仅需要79毫秒，加载3000个点，需要500毫秒，10000个点，需要6秒。但是所有的点一旦加载上了，拖动没有任何的卡感。

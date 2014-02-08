@@ -978,9 +978,9 @@ max.Layer.GraphicsLayer.prototype._mousePointInLayer=function(x,y){
     }
     return null;
 }
-max.Geometry.Graphic = function (geometry, attribute, symbol) {
+max.Geometry.Graphic = function (geometry, attributes, symbol) {
     this.geometry = geometry;
-    this.attribute = attribute || {};
+    this.attributes = attributes || {};
 
     if (typeof symbol === "undefined") {
         if (geometry.geometryType === "POINT") {

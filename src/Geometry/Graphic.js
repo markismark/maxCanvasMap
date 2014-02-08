@@ -1,6 +1,6 @@
-max.Geometry.Graphic = function (geometry, attribute, symbol) {
+max.Geometry.Graphic = function (geometry, attributes, symbol) {
     this.geometry = geometry;
-    this.attribute = attribute || {};
+    this.attributes = attributes || {};
 
     if (typeof symbol === "undefined") {
         if (geometry.geometryType === "POINT") {
@@ -17,7 +17,7 @@ max.Geometry.Graphic = function (geometry, attribute, symbol) {
 }
 max.Geometry.Graphic.prototype = {
     draw:function (map) {
-        this.geometry.draw(map,this.symbol);
+        this.geometry.draw(map,this.symbol,this.attributes);
     },
     _mousePointInGraphic:function (x, y) {
         var map = this.parentLayer.parentMap;

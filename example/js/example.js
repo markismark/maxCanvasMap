@@ -53,7 +53,7 @@ var initMap = function() {
 		wkid : 4326
 	});
 	var graphic = new max.Geometry.Graphic(point);
-	graphic.attribute.id = 1;
+	graphic.attributes.id = 1;
 
 	var point2 = new max.Geometry.Point(10438988, 4557548, {
 		wkid : 102100
@@ -107,10 +107,10 @@ var initMap = function() {
 
 
 	graphicsLayer.addEventListener("onclick", function(event) {
-		mconsole("发生了onclick事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		mconsole("发生了onclick事件：对象为"+"第"+event.graphic.attributes.id+"要素");
 	})
 	graphicsLayer.addEventListener("onmouseout", function(event) {
-		mconsole("发生了onmouseout事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		mconsole("发生了onmouseout事件：对象为"+"第"+event.graphic.attributes.id+"要素");
 		if(event.graphic.geometry.geometryType !== "LINE") {
 			event.graphic.symbol.fillStyle = "rgba(30,113,240,0.8)";
 			event.graphic.symbol.fillSize = "8";
@@ -120,7 +120,7 @@ var initMap = function() {
 		}
 	})
 	graphicsLayer.addEventListener("onmouseover", function(event) {
-		mconsole("发生了onmouseover事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		mconsole("发生了onmouseover事件：对象为"+"第"+event.graphic.attributes.id+"要素");
 		if(event.graphic.geometry.geometryType !== "LINE") {
 			event.graphic.symbol.fillStyle = "rgba(255,12,12,0.6)";
 			event.graphic.symbol.fillSize = "12";
@@ -132,7 +132,7 @@ var initMap = function() {
 
 	})
 	graphicsLayer.addEventListener("onmousemove", function(event) {
-		mconsole("发生了onmousemove事件：对象为"+"第"+event.graphic.attribute.id+"要素");
+		mconsole("发生了onmousemove事件：对象为"+"第"+event.graphic.attributes.id+"要素");
 	});
 
     gindex=5;
@@ -146,7 +146,7 @@ var addPointInMap=function(num){
         var y=Math.random()*20037508*2-20037508;
         var p=new max.Geometry.Point(x,y,{wkid:102100});
         var g=new max.Geometry.Graphic(p);
-        g.attribute.id=gindex;
+        g.attributes.id=gindex;
         ++gindex;
         graphicsLayer.addGraphic(g);
     }
