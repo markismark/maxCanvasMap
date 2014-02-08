@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="60c45c42-266d-4bbc-81af-77a2ea66f2a5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Geometry/Geometry.js" afterPath="$PROJECT_DIR$/src/Geometry/Geometry.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Geometry/Graphic.js" afterPath="$PROJECT_DIR$/src/Geometry/Graphic.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/canvasMap-min.js" afterPath="$PROJECT_DIR$/canvasMap-min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/canvasMap.js" afterPath="$PROJECT_DIR$/canvasMap.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/js/example.js" afterPath="$PROJECT_DIR$/example/js/example.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/js/symbol.js" afterPath="$PROJECT_DIR$/example/js/symbol.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Symbol/symbol.js" afterPath="$PROJECT_DIR$/src/Symbol/symbol.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/updates.log" afterPath="$PROJECT_DIR$/updates.log" />
     </list>
     <ignored path="maxCanvasMap.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -87,15 +81,15 @@
         <option value="$PROJECT_DIR$/example/symbol/symbol.html" />
         <option value="$PROJECT_DIR$/example/symbol/symbol.js" />
         <option value="$PROJECT_DIR$/example/symbol.html" />
-        <option value="$PROJECT_DIR$/updates.log" />
         <option value="$PROJECT_DIR$/canvasMap-min.js" />
         <option value="$PROJECT_DIR$/canvasMap.js" />
         <option value="$PROJECT_DIR$/example/js/example.js" />
-        <option value="$PROJECT_DIR$/readme.md" />
         <option value="$PROJECT_DIR$/src/Geometry/Graphic.js" />
         <option value="$PROJECT_DIR$/src/Symbol/symbol.js" />
         <option value="$PROJECT_DIR$/src/Geometry/Geometry.js" />
         <option value="$PROJECT_DIR$/example/js/symbol.js" />
+        <option value="$PROJECT_DIR$/updates.log" />
+        <option value="$PROJECT_DIR$/readme.md" />
       </list>
     </option>
   </component>
@@ -393,21 +387,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/updates.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="11" selection-start="106" selection-end="106" vertical-scroll-proportion="0.1883746" vertical-offset="0" max-vertical-offset="929" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Geometry/Graphic.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="21" column="42" selection-start="918" selection-end="918" vertical-scroll-proportion="0.66381764" vertical-offset="292" max-vertical-offset="1150">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/readme.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="107" column="58" selection-start="2884" selection-end="2884" vertical-scroll-proportion="0.49175823" vertical-offset="2496" max-vertical-offset="3100">
           <folding />
         </state>
       </provider>
@@ -450,6 +432,20 @@
     <entry file="file://$PROJECT_DIR$/src/Geometry/Geometry.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="165" column="45" selection-start="6006" selection-end="6006" vertical-scroll-proportion="0.0" vertical-offset="3825" max-vertical-offset="8150">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="21" selection-start="480" selection-end="480" vertical-scroll-proportion="0.5319149" vertical-offset="0" max-vertical-offset="3100">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/updates.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="12" selection-start="138" selection-end="138" vertical-scroll-proportion="0.43327555" vertical-offset="0" max-vertical-offset="577">
           <folding />
         </state>
       </provider>
