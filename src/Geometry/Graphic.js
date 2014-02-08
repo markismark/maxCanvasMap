@@ -11,7 +11,8 @@ max.Geometry.Graphic = function (geometry, attributes, symbol) {
             this.symbol = new max.Symbol.SimpleFillSymbol({fillStyle:'rgba(30,113,240,0.8)'});
         }
     }else{
-        this.symbol = max.util.clone(symbol);
+        //this.symbol = max.util.clone(symbol);
+        this.symbol=symbol;
     }
     this.parentLayer = null;
 }

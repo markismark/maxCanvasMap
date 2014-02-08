@@ -165,6 +165,11 @@ max.Geometry.Point.prototype.draw=function(map,symbol,attributes){
         }
         context.translate(symbol.textOffsetX,symbol.textOffsetY);
         context.fillText(text,x,y);
+    }else if(symbol.SymbolType==="ImageSymbol"){
+        if(symbol.iconInit){
+            context.translate(symbol.imageOffsetX,symbol.imageOffsetY);
+            context.drawImage(symbol.icon,symbol.imagePositionOffsetX,symbol.imagePositionOffsetY,symbol.imageWidth,symbol.imageHeight,x-symbol.imageWidth/2,y-symbol.imageHeight/2,symbol.imageWidth,symbol.imageHeight);
+        }
     }
     context.restore();
 }

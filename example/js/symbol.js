@@ -33,17 +33,29 @@ function initMap(){
     },function(attributes){
         return attributes.name+":"+attributes.age;
     }));
-
     var point2 = new max.Geometry.Point(10438988, 4557548, {
         wkid : 102100
     });
     var graphic2 = new max.Geometry.Graphic(point2, {
         id : 2
     });
+
+    var point3 = new max.Geometry.Point(118, 38, {
+        wkid : 4326
+    });
+    var graphic4 = new max.Geometry.Graphic(point,null,new max.Symbol.ImageSymbol({
+        imageUrl:'image/num_icons2.png',
+        imageWidth:23,
+        imageHeight:30,
+        imagePositionOffsetX:23,
+        imagePositionOffsetY:30,
+        imageOffsetY:-15
+    }) );
     graphicsLayer = new max.Layer.GraphicsLayer();
     graphicsLayer.addGraphic(graphic);
     graphicsLayer.addGraphic(graphic2);
     graphicsLayer.addGraphic(graphic3);
+    graphicsLayer.addGraphic(graphic4);
     map.addLayer(graphicsLayer);
 }
 initMap();

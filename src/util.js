@@ -54,6 +54,9 @@ max.util = {
             re = [];
 
         for(var i in obj) {
+            if(obj.DOCUMENT_NODE){
+                return obj;
+            }
             re[i] = max.util.clone(obj[i]);
         }
         return re;

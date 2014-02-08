@@ -6,6 +6,7 @@ max.Symbol=function(option){
     this.fillSize=option.fillSize?option.fillSize:8;
     this.lineWidth=option.lineWidth?option.lineWidth:4;
     this.lineStyle=option.lineStyle?option.lineStyle:'rgba(0,0,0,1)';
+
     this.font='18px Helvetica Neue,Microsoft YaHei';
     this.horAlign=option.horAlign?option.horAlign:'center';
     this.verAlign=option.verAlign?option.verAlign:'middle';
@@ -13,6 +14,14 @@ max.Symbol=function(option){
     this.offsetY=option.offsetY?option.offsetX:0;
     this.textOffsetX=option.textOffsetX?option.textOffsetX:0;
     this.textOffsetY=option.textOffsetY?option.textOffsetY:0;
+
+    this.imageUrl=option.imageUrl?option.imageUrl:"";
+    this.imageOffsetX=option.imageOffsetX?option.imageOffsetX:0;
+    this.imageOffsetY=option.imageOffsetY?option.imageOffsetY:0;
+    this.imageWidth=option.imageWidth?option.imageWidth:20;
+    this.imageHeight=option.imageHeight?option.imageHeight:20;
+    this.imagePositionOffsetX=option.imagePositionOffsetX?option.imagePositionOffsetX:0;
+    this.imagePositionOffsetY=option.imagePositionOffsetY?option.imagePositionOffsetY:0;
 }
 
 max.Symbol.prototype.setContext=function(context){
@@ -66,5 +75,17 @@ max.Symbol.TextSymbol=function(option,text){
     this.text=text;
     this.SymbolType="TextSymbol";
 }
-
 max.Symbol.TextSymbol.prototype=new max.Symbol();
+
+max.Symbol.ImageSymbol=function(option){
+    max.Symbol.call(this,option);
+    this.SymbolType="ImageSymbol";
+    this.icon=new Image();
+    this.icon.src=option.imageUrl;
+    this.iconInit=false;
+    var that=this;
+    this.icon.onload=function(){
+        that.iconInit=true;
+    }
+}
+max.Symbol.ImageSymbol.prototype=new max.Symbol();

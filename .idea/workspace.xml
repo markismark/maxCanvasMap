@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="60c45c42-266d-4bbc-81af-77a2ea66f2a5" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/example/image/num_icons2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Geometry/Geometry.js" afterPath="$PROJECT_DIR$/src/Geometry/Geometry.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Geometry/Graphic.js" afterPath="$PROJECT_DIR$/src/Geometry/Graphic.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/js/symbol.js" afterPath="$PROJECT_DIR$/example/js/symbol.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Symbol/symbol.js" afterPath="$PROJECT_DIR$/src/Symbol/symbol.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/updates.log" afterPath="$PROJECT_DIR$/updates.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/util.js" afterPath="$PROJECT_DIR$/src/util.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="maxCanvasMap.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,7 +36,16 @@
       <file leaf-file-name="symbol.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Symbol/symbol.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="27" selection-start="908" selection-end="908" vertical-scroll-proportion="0.0" vertical-offset="773" max-vertical-offset="1875">
+            <state line="18" column="21" selection-start="780" selection-end="792" vertical-scroll-proportion="0.0" vertical-offset="848" max-vertical-offset="2400">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="util.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/util.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="57" column="27" selection-start="1915" selection-end="1915" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1725">
               <folding />
             </state>
           </provider>
@@ -38,19 +54,46 @@
       <file leaf-file-name="Geometry.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Geometry/Geometry.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="165" column="45" selection-start="6006" selection-end="6006" vertical-scroll-proportion="0.0" vertical-offset="3750" max-vertical-offset="8150">
+            <state line="169" column="62" selection-start="6203" selection-end="6203" vertical-scroll-proportion="0.0" vertical-offset="3825" max-vertical-offset="8275">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="symbol.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Graphic.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Geometry/Graphic.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="27" selection-start="739" selection-end="739" vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="1175">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="symbol.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/js/symbol.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="33" selection-start="1013" selection-end="1013" vertical-scroll-proportion="0.6967071" vertical-offset="373" max-vertical-offset="1300">
+            <state line="50" column="32" selection-start="1525" selection-end="1525" vertical-scroll-proportion="0.0" vertical-offset="923" max-vertical-offset="1600">
               <folding>
                 <element signature="e#0#40#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="updates.log" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/updates.log">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="24" selection-start="139" selection-end="150" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="400">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="readme.md" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/readme.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="33" selection-start="481" selection-end="492" vertical-scroll-proportion="0.5319149" vertical-offset="0" max-vertical-offset="3100">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -74,7 +117,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/Layer/AGSTileLayer.js" />
         <option value="$PROJECT_DIR$/src/Layer/AMapLayer.js" />
         <option value="$PROJECT_DIR$/src/Layer/OpenStreetLayer.js" />
         <option value="$PROJECT_DIR$/src/map.js" />
@@ -84,6 +126,7 @@
         <option value="$PROJECT_DIR$/canvasMap-min.js" />
         <option value="$PROJECT_DIR$/canvasMap.js" />
         <option value="$PROJECT_DIR$/example/js/example.js" />
+        <option value="$PROJECT_DIR$/src/util.js" />
         <option value="$PROJECT_DIR$/src/Geometry/Graphic.js" />
         <option value="$PROJECT_DIR$/src/Symbol/symbol.js" />
         <option value="$PROJECT_DIR$/src/Geometry/Geometry.js" />
@@ -240,6 +283,9 @@
     <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\work\github\maxCanvasMap\example\image" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\work\github\maxCanvasMap\example\js" />
       <recent name="D:\work\github\maxCanvasMap\example" />
@@ -319,7 +365,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16032211" sideWeight="0.67105263" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16032211" sideWeight="0.67105263" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -345,13 +391,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Layer/OpenStreetLayer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="27" selection-start="1681" selection-end="1681" vertical-scroll-proportion="0.808952" vertical-offset="334" max-vertical-offset="1250">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Layer/TileLayer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="105" column="13" selection-start="3968" selection-end="3968" vertical-scroll-proportion="0.0" vertical-offset="2472" max-vertical-offset="4275">
@@ -387,13 +426,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Geometry/Graphic.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="42" selection-start="918" selection-end="918" vertical-scroll-proportion="0.66381764" vertical-offset="292" max-vertical-offset="1150">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/canvasMap-min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="18266" selection-start="18266" selection-end="18266" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="364">
@@ -422,40 +454,54 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="27" selection-start="1915" selection-end="1915" vertical-scroll-proportion="0.0" vertical-offset="998" max-vertical-offset="1725">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Symbol/symbol.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="27" selection-start="908" selection-end="908" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="1875">
+        <state line="18" column="21" selection-start="780" selection-end="792" vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="2400">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Geometry/Geometry.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="165" column="45" selection-start="6006" selection-end="6006" vertical-scroll-proportion="0.0" vertical-offset="3825" max-vertical-offset="8150">
+        <state line="169" column="62" selection-start="6203" selection-end="6203" vertical-scroll-proportion="0.0" vertical-offset="3825" max-vertical-offset="8275">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/readme.md">
+    <entry file="file://$PROJECT_DIR$/src/Geometry/Graphic.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="21" selection-start="480" selection-end="480" vertical-scroll-proportion="0.5319149" vertical-offset="0" max-vertical-offset="3100">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/updates.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="12" selection-start="138" selection-end="138" vertical-scroll-proportion="0.43327555" vertical-offset="0" max-vertical-offset="577">
+        <state line="14" column="27" selection-start="739" selection-end="739" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1175">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example/js/symbol.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="33" selection-start="1013" selection-end="1013" vertical-scroll-proportion="0.6967071" vertical-offset="373" max-vertical-offset="1300">
+        <state line="50" column="32" selection-start="1525" selection-end="1525" vertical-scroll-proportion="0.0" vertical-offset="923" max-vertical-offset="1600">
           <folding>
             <element signature="e#0#40#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/updates.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="24" selection-start="139" selection-end="150" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="400">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="33" selection-start="481" selection-end="492" vertical-scroll-proportion="0.5319149" vertical-offset="0" max-vertical-offset="3100">
+          <folding />
         </state>
       </provider>
     </entry>
