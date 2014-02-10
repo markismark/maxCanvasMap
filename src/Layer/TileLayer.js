@@ -5,6 +5,7 @@ max.Layer.TileLayer = function (serviceUrl) {
     this.serviceUrl = serviceUrl;
     this.parentMap = null;
     this._imageList = [];
+    this._imageCache={};
     this.scaleRate = 1;
     this.cors=false;//是否支持跨域
     this._dlm=new max._imgDownloadManager();
@@ -83,46 +84,15 @@ max.Layer.TileLayer.prototype.draw=function(){
 max.Layer.TileLayer.prototype.ondrag=function(){
     //todo 屏幕闪烁 待解决
     if(this.parentMap){
-        for (var i = this._imageList.length - 1; i != -1; --i) {
-            var image = this._imageList[i];
-            image.update();
-            if (image.pz !== this.z) {
-                this._imageList.splice(i, 1);
-                delete image;
-                image = null;
-                break;
-            }
-            if (image.x < 0 - image.layer.picWidth * (image.layer.scaleRate)) {
-                this._imageList.splice(i, 1);
-                delete image;
-                image = null;
-                break;
-            }
-            if (image.y < 0 - image.layer.picHeight * (image.layer.scaleRate)) {
-                this._imageList.splice(i, 1);
-                delete image;
-                image = null;
-                break;
-            }
-            if (image.x > image.layer.parentMap._canvas.width * (image.layer.scaleRate)) {
-                this._imageList.splice(i, 1);
-                delete image;
-                image = null;
-                break;
-            }
-            if (image.y > image.layer.parentMap._canvas.height * (image.layer.scaleRate)) {
-                this._imageList.splice(i, 1);
-                delete image;
-                image = null;
-                break;
-            }
-
-        }
         var o = this._calImage(this.parentMap);
         var list=this._updateImageList(o);
+        for(var i in list){
+            if(this._imageCache[list[i].src]){
+                list[i]=this._imageCache[list[i].src];
+            }
+        }
         this._dlm.refrshImg(list);
     }
-
 }
 
 
@@ -131,10 +101,6 @@ max.Layer._TitleImage = function (url, layer, x, y, z, xmin, ymax,cors) {
     if(cors===true){
         this.image.crossOrigin="Anonymous";
     }
-    var that = this;
-//    this.image.onload = function (event) {
-//        that.imageOnLoad(that);
-//    };
     this.src=url;
     //this.image.src = url;
     this.layer = layer;

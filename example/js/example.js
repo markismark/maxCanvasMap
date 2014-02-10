@@ -24,9 +24,9 @@ var init = function() {
 var initPosition = function() {
 	var h = window.document.body.clientHeight;
 	var w = window.document.body.clientWidth;
-	var canvas = document.getElementById('canvas');
-	canvas.setAttribute("height", h - 82);
-	canvas.setAttribute("width", w - 4);
+	var map = document.getElementById('map');
+	map.style.height=(h-82)+"px";
+	map.style.width=w-4+"px";
 }
 var initMap = function() {
 	var extent = new max.Extent({
@@ -35,7 +35,7 @@ var initMap = function() {
 		xmax : 17135450.014862295,
 		ymax : 6351564.966545691
 	});
-	map = new max.Map("canvas", extent);
+	map = new max.Map("map", extent);
 	layer = new max.Layer.GoogleLayer("http://mt2.google.cn/vt/");
 	map.addLayer(layer);
     map.addEventListener("onmousemove",function(event){

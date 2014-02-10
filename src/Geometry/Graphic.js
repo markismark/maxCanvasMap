@@ -17,8 +17,8 @@ max.Geometry.Graphic = function (geometry, attributes, symbol) {
     this.parentLayer = null;
 }
 max.Geometry.Graphic.prototype = {
-    draw:function (map) {
-        this.geometry.draw(map,this.symbol,this.attributes);
+    draw:function (map,cacheContext) {
+        this.geometry.draw(map,this.symbol,this.attributes,cacheContext);
     },
     _mousePointInGraphic:function (x, y) {
         var map = this.parentLayer.parentMap;
@@ -34,7 +34,6 @@ max.Geometry.Graphic.prototype = {
                 this.parentLayer.parentMap._context.restore();
                 return b;
             }
-
         } else {
             return false;
         }

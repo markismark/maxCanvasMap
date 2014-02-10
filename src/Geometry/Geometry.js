@@ -114,11 +114,12 @@ max.Geometry.Point=function(x,y,option){
     this._getWebMercatorPoint();
 }
 max.Geometry.Point.prototype=new max.Geometry.Geometry();
-max.Geometry.Point.prototype.draw=function(map,symbol,attributes){
+max.Geometry.Point.prototype.draw=function(map,symbol,attributes,cacheContext){
     var p=max.util.webMercatorToMapClient(map,this.webMercatorPoint.x,this.webMercatorPoint.y);
     var x= p.x;
     var y= p.y;
-    var context=map._context;
+    //var context=map._context;
+    var context=cacheContext;
     if(x<0||y<0||x>map._canvas.width||y>map._canvas.height){
         return false;
     }
@@ -234,8 +235,9 @@ max.Geometry.Line.prototype.getPath=function(map,symbol){
     }
     return true;
 }
-max.Geometry.Line.prototype.draw=function(map,symbol){
-    var context=map._context;
+max.Geometry.Line.prototype.draw=function(map,symbol,attributes,cacheContext){
+    //var context=map._context;
+    var context=cacheContext;
     context.save();
     context.lineWidth=symbol.lineWidth;
     context.strokeStyle=symbol.lineStyle;
@@ -297,8 +299,9 @@ max.Geometry.Polygon.prototype.getPath=function(map,symbol){
     }
     return true;
 }
-max.Geometry.Polygon.prototype.draw=function(map,symbol){
-    var context=map._context;
+max.Geometry.Polygon.prototype.draw=function(map,symbol,attributes,cacheContext){
+    //var context=map._context;
+    var context=cacheContext;
     context.save();
     context.fillStyle=symbol.fillStyle;
     if(symbol.SymbolType=="SimpleFillSymbol"){

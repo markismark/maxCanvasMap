@@ -10,8 +10,35 @@ window.requestAnimFrame = (function(){
 })();
 var max = {};
 max.Map = function (id, extent) {
-    this._canvas = document.getElementById(id);
-    this._context = this._canvas.getContext('2d');
+    /////
+    this._mapContainer=document.getElementById(id);
+    this._mapContainer.style.position="relative";
+    var _canvas = document.createElement('canvas');
+    _canvas.setAttribute("height",this._mapContainer.clientHeight);
+    _canvas.setAttribute("width",this._mapContainer.clientWidth);
+    _canvas.style.position="absolute";
+    _canvas.style.left="0px";
+    _canvas.style.top="0px";
+    this._mapContainer.appendChild(_canvas);
+    _context = _canvas.getContext('2d');
+
+    var _canvas2 = document.createElement('canvas');
+    _canvas2.setAttribute("height",this._mapContainer.clientHeight);
+    _canvas2.setAttribute("width",this._mapContainer.clientWidth);
+    //_canvas2.style.visibility='hidden';
+    _canvas2.style.position="absolute";
+    _canvas2.style.left="0px";
+    _canvas2.style.top="0px";
+    _canvas2.style.opacity="0";
+    this._mapContainer.appendChild(_canvas2);
+    _context2 = _canvas.getContext('2d');
+
+    this._canvasList=[_canvas,_canvas2];
+    this._contextList=[_context,_context2];
+
+    this._canvas=_canvas2;
+    this._context=_context2;
+    /////
     this._layers = [];
     this.extent = extent;
     this.width = this._canvas.width;
@@ -44,7 +71,15 @@ max.Map.prototype = {
         this.scrollMap();
         this._addAllEvent();
         //this._mousechange();
+        var ci=0;
         var x = function () {
+//            var j=ci%2;
+//            var k=(++ci)%2;
+//            that._canvas=that._canvasList[j];
+//            that._context=that._contextList[j];
+//            that._canvas.style.visibility="hidden";
+//            that._canvasList[k].style.visibility="visible";
+            that._contextList[0].drawImage(that._canvasList[1],0,0);
             that.draw.call(that);
             requestAnimFrame(x);
         }
@@ -66,6 +101,9 @@ max.Map.prototype = {
             this._layers.splice(index,0,layer);
         }
         layer.parentMap = this;
+        if(layer._addToMap){
+            layer._addToMap();
+        }
         this.load(layer);
     },
     removeLayer:function(layer){
@@ -366,6 +404,9 @@ max._imgDownloadManager=function(){
                         _timg.imageOnLoad.call(_timg);
                     }
                     downloading.push(_timg);
+                    if(timg.isonload==true){
+                        return ;
+                    }
                     _timg.image.src=_timg.src;
                 })(timg);
             }
